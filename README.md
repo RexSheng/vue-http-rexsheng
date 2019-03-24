@@ -75,10 +75,14 @@ this.$ajax.send(option)
 |headers         |请求headers对象           | 例如`{"Content-type":"application/json;charset=UTF-8"}` |
 |timeout         |超时时间毫秒               | 毫秒数 |
 |withCredentials |跨域响应设置cookie         |默认`false` |
-|formData |使用formdata表单发送数据，通常用于文件上传         |默认`false` |
 |data |请求发送的数据         |Object/Array |
-|dataType |表明要发送的数据格式         |默认`"json"` |
-|transform |自定义格式化请求前数据的函数         | 有一个参数为当前配置的data数据 例如`function(data){return JSON.stringify(data);}` |
+|dataType |表明要发送的数据格式         |默认`"json"` `"xml"` `formData`(使用formdata表单发送数据，通常用于文件上传)|
+|responseType|返回的数据类型|默认`""` `"json"` `"blob"` `"text"` `"arraybuffer"` `"document"`
+|transform |自定义格式化请求前数据的函数         | 参数为当前配置的data数据<br/> 例如`function(data){return JSON.stringify(data);}` |
+|success|请求成功的回调|`function(data,req){}` |
+|error|请求失败的回调|`function(err,req){}` |
+|complete|请求完成的回调|`function(){}` |
+|uploadProgress|文件上传的进度事件|`function(d){}` |
 |loadstart |请求开始时的事件         |`function(){}` |
 |ontimeout |超时事件         |`function(d){}` |
 |onprogress |进度事件         |`function(d){}` |

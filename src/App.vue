@@ -2,58 +2,263 @@
   <div id="app">
     <img src="./assets/logo.png">
     <h1>{{ msg }}</h1>
- 
-    <h2>Essential Links</h2>
+
+    <h2>Ajax请求测试</h2>
     <ul>
-      <li><a href="https://vuejs.org" target="_blank">Core Docs</a></li>
-      <li><a href="https://forum.vuejs.org" target="_blank">Forum</a></li>
-      <li><a href="https://chat.vuejs.org" target="_blank">Community Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank">Twitter</a></li>
+      <li>
+        <button @click="getData">Get数据</button>
+      </li>
+      <li>
+        <button @click="get404">Get url 404</button>
+      </li>
+      <li>
+        <button @click="postLogin">Post登陆</button>
+      </li>
+      <li>
+        <button @click="postFetchData(false)">Post error headers</button>
+      </li>
+      <li>
+        <button @click="postFetchData(true)">Post用户列表</button>
+      </li>
     </ul>
-    <h2>Ecosystem</h2>
     <ul>
-      <li><a href="http://router.vuejs.org/" target="_blank">vue-router</a></li>
-      <li><a href="http://vuex.vuejs.org/" target="_blank">vuex</a></li>
-      <li><a href="http://vue-loader.vuejs.org/" target="_blank">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank">awesome-vue</a></li>
+      <li>
+        <div class="fileupload">
+          <input
+            type="file"
+            multiple
+            title="请选择文件"
+            @click="clearFile($event)"
+            @change="postFile($event)"
+          >
+          <button type="button">选择文件</button>
+        </div>
+      </li>
+      <li>
+        <input type="text" v-model="downloadFileName"/>
+        <button @click="downloadFile" style="width:100px;height:20px;">下载文件</button>
+      </li>
     </ul>
+    <div class="progress" v-if="uploadPro>0" :style="{'width':uploadPro+'%'}">{{uploadPro}}%</div>
+    <div class="progress" v-if="downloadPro>0" :style="{'width':downloadPro+'%'}">已下载{{downloadPro}}%</div>
+    <table>
+      <tr v-for="(item,index) in files" :key="index">
+        <td>{{item.name}}</td>
+        <td>{{item.size}}</td>
+        <td>{{item.type}}</td>
+        <td>{{item.lastModifiedDate}}</td>
+      </tr>
+    </table>
   </div>
 </template>
 
-<script> 
-import Vue from 'vue'
+<script>
+import Vue from "vue";
 export default {
-  name: 'app',
-  data () {
+  name: "app",
+  data() {
     return {
-      msg: 'Welcome to Your Vue.js App'
-    }
+      msg: "Welcome to Your Vue.js App",
+      files: [],
+      uploadPro: 0,
+      downloadPro:0,
+      downloadFileName:"LongPathTool(jb51.net).rar"
+    };
   },
-  mounted(){
-    this.$ajax.send({
-      url:"http://xconsole.rrslj.com/datacenter/userxw/getCenterData?dateFlag=2018-08-10",
-      type:"get"
-    }).then((d)=>{
-      console.log("success1",d,this.msg)
-    }).catch((d)=>{
-      console.log("error1",d)
-    });
-    Vue.ajax.send({
-      url:"http://xconsole.rrslj.com/datacenter/userxw/getCenterData?dateFlag=2018-08-10",
-      type:"get"
-    }).then((d)=>{
-      console.log("success2",d,this.msg)
-    }).catch((d)=>{
-      console.log("error2",d)
-    });
+  mounted() {},
+  methods: {
+    getData() {
+      this.$ajax
+        .send({
+          url:
+            "http://xconsole.rrslj.com/datacenter/userxw/getCenterData?dateFlag=2018-08-10",
+          type: "get"
+        })
+        .then(d => {
+          console.log("success1", d, this.msg);
+        })
+        .catch(d => {
+          console.log("error1", d);
+        });
+    },
+    get404() {
+      Vue.ajax
+        .send({
+          url:
+            "http://xconsole.rrslj.com/datacenter/userxw/getCenterData2?dateFlag=2018-08-10",
+          type: "get"
+        })
+        .then(d => {
+          console.log("success2", d, this.msg);
+        })
+        .catch(d => {
+          console.log("error2", d);
+        });
+    },
+    postLogin() {
+      Vue.ajax
+        .send({
+          url: Vue.ajax.prefix+"/api/user/login",
+          type: "post",
+          data: { loginName: "shengxp", loginPassword: "123" }
+        })
+        .then(d => {
+          console.log("success post", d, this.msg);
+        })
+        .catch(d => {
+          console.log("error post", d);
+        });
+    },
+    postFetchData(h) {
+      Vue.ajax
+        .send({
+          url: Vue.ajax.prefix+"/api/user/query",
+          type: "post",
+          headers: h ? { Authorization: "Basic c2hlbmd4cDoxMjM=" } : {},
+          data: { keyWord: "管理" }
+        })
+        .then(d => {
+          console.log("success post", d, this.msg);
+        })
+        .catch(d => {
+          console.log("error post", d);
+        });
+    },
+    postFile: function(e) {
+      for (var i = 0; i < e.target.files.length; i++) {
+        this.files.push(e.target.files[i]);
+      }
 
+      console.log(this.files);
+      var self = this;
+      Vue.ajax
+        .send({
+          url: Vue.ajax.prefix+"/api/upload",
+          type: "post",
+          dataType: "formdata",
+          headers: { Authorization: "Basic c2hlbmd4cDoxMjM=" },
+          data: {
+            file: this.files,
+            userName: "fileUser上传",
+            selected: [1, 4, 199]
+          },
+          uploadProgress: function(ev) {
+            console.log("uploadProgress", ev);
+            if (ev.lengthComputable) {
+              self.uploadPro = (100 * ev.loaded) / ev.total;
+            }
+          }
+        })
+        .then(d => {
+          console.log("success file", d, this.msg);
+        })
+        .catch(d => {
+          console.log("error file", d);
+        });
+    },
+    clearFile(e) {
+      this.files = [];
+      e.target.value = "";
+    },
+    downloadFile:function(){
+      this.downloadPro=0;
+      Vue.ajax
+        .send({
+          url: Vue.ajax.prefix+"/api/download?file={file}",
+          type: "get",
+          dataType: "formdata",
+          headers: { Authorization: "Basic c2hlbmd4cDoxMjM=" },
+          data: {
+             file:this.downloadFileName
+          },
+          progress:function(ev){
+            console.log("downloading",ev);
+            if (ev.lengthComputable) {
+                this.downloadPro = (100 * ev.loaded) / ev.total;
+            }
+          },
+          responseType:"blob",
+          success:function(d,allData){
+            console.log("success download file", d,allData,this.msg);
+            console.log(allData.request.getResponseHeader("Content-Disposition"))
+            var filename=this.downloadFileName
+            if (typeof window.chrome !== 'undefined') {
+                // Chrome version
+                var link = document.createElement('a');
+                link.href = window.URL.createObjectURL(d);
+                link.download = filename;
+                link.click();
+            } else if (typeof window.navigator.msSaveBlob !== 'undefined') {
+                // IE version
+                var blob = new Blob([d], { type: 'application/force-download' });
+                window.navigator.msSaveBlob(blob, filename);
+            } else {
+                // Firefox version
+                var file = new File([d], filename, { type: 'application/force-download' });
+                window.open(URL.createObjectURL(file));
+            }
+          }
+        },this)
+        .then(d => {
+          
+        })
+        .catch(d => {
+          console.log("error download file", d);
+        });
+    }
   }
-}
+};
 </script>
 
 <style>
+.fileupload {
+  width: 100px;
+  height: 50px;
+  display: block;
+  position: relative;
+}
+.fileupload input {
+  width: 100px;
+  height: 50px;
+  position: relative;
+  z-index: 10;
+  opacity: 0;
+  cursor: pointer;
+}
+.fileupload input:hover {
+  border:1px solid rgb(134, 119, 98);
+}
+.fileupload button {
+  width: 100px;
+  height: 50px;
+  position: absolute;
+  z-index: 5;
+  top: 0;
+  left: 0;
+  background-color: bisque;
+  border:1px solid rgb(248, 195, 122);
+}
+.fileupload button:hover {
+  border:1px solid rgb(134, 119, 98);
+}
+table td {
+  border: 1px solid black;
+}
+.progress {
+  margin-bottom: 10px;
+  height: 12px;
+  background-color: rgb(20, 199, 80);
+  color: black;
+  font-size: 10px;
+  text-align: center;
+  border-radius: 5px;
+  transition: width 300ms;
+  -moz-transition: width 300ms; /* Firefox 4*/
+  -webkit-transition: width 300ms; /* Safari 和 Chrome */
+  -o-transition: width 300ms;
+}
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
@@ -61,7 +266,8 @@ export default {
   margin-top: 60px;
 }
 
-h1, h2 {
+h1,
+h2 {
   font-weight: normal;
 }
 

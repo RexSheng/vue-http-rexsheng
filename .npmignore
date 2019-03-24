@@ -2,6 +2,8 @@ dist/*.map
 node_modules
 build
 src
+server
+.git
 .babelrc
 .editorconfig
 .gitignore

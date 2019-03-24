@@ -1,0 +1,480 @@
+2019-03-18 11:29:36.698  INFO 6100 --- [main] com.ph.framework.BootApplication         : Starting BootApplication v0.0.1-SNAPSHOT on DESKTOP-DH6HAO6 with PID 6100 (E:\github\vue-http-rexsheng\server\server.jar started by 生旭鹏 in E:\github\vue-http-rexsheng\server)
+2019-03-18 11:29:36.707  INFO 6100 --- [main] com.ph.framework.BootApplication         : The following profiles are active: dev
+2019-03-18 11:29:36.859  INFO 6100 --- [main] ationConfigEmbeddedWebApplicationContext : Refreshing org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@27f8302d: startup date [Mon Mar 18 11:29:36 CST 2019]; root of context hierarchy
+2019-03-18 11:29:40.069  INFO 6100 --- [main] f.a.AutowiredAnnotationBeanPostProcessor : JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
+2019-03-18 11:29:42.362  INFO 6100 --- [main] s.b.c.e.t.TomcatEmbeddedServletContainer : Tomcat initialized with port(s): 8700 (http)
+2019-03-18 11:29:42.395  INFO 6100 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2019-03-18 11:29:42.397  INFO 6100 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet Engine: Apache Tomcat/8.5.23
+2019-03-18 11:29:44.512  INFO 6100 --- [localhost-startStop-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2019-03-18 11:29:44.512  INFO 6100 --- [localhost-startStop-1] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 7658 ms
+2019-03-18 11:29:44.956  INFO 6100 --- [localhost-startStop-1] o.s.b.w.servlet.ServletRegistrationBean  : Mapping servlet: 'dispatcherServlet' to [/]
+2019-03-18 11:29:44.965  INFO 6100 --- [localhost-startStop-1] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: 'characterEncodingFilter' to: [/*]
+2019-03-18 11:29:44.965  INFO 6100 --- [localhost-startStop-1] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: 'hiddenHttpMethodFilter' to: [/*]
+2019-03-18 11:29:44.966  INFO 6100 --- [localhost-startStop-1] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: 'httpPutFormContentFilter' to: [/*]
+2019-03-18 11:29:44.966  INFO 6100 --- [localhost-startStop-1] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: 'requestContextFilter' to: [/*]
+2019-03-18 11:29:44.966  INFO 6100 --- [localhost-startStop-1] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: 'corsFilter' to: [/*]
+2019-03-18 11:29:47.501  INFO 6100 --- [main] s.w.s.m.m.a.RequestMappingHandlerAdapter : Looking for @ControllerAdvice: org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@27f8302d: startup date [Mon Mar 18 11:29:36 CST 2019]; root of context hierarchy
+2019-03-18 11:29:47.925  INFO 6100 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/api/upload],methods=[POST]}" onto public com.ph.framework.dto.output.Result com.ph.framework.controller.FileController.uploadFile(javax.servlet.http.HttpServletRequest,com.ph.framework.dto.input.FileUploadInput)
+2019-03-18 11:29:47.932  INFO 6100 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/api/download],methods=[GET]}" onto public void com.ph.framework.controller.FileController.downloadFile(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse,java.lang.String)
+2019-03-18 11:29:47.949  INFO 6100 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/api/user/query],methods=[POST]}" onto public com.ph.framework.dto.output.Result com.ph.framework.controller.UserController.getUsers(com.ph.framework.dto.input.UserInput)
+2019-03-18 11:29:47.950  INFO 6100 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/api/user/query],methods=[GET]}" onto public com.ph.framework.dto.output.Result com.ph.framework.controller.UserController.getUsers(java.lang.String)
+2019-03-18 11:29:47.953  INFO 6100 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/api/user/login],methods=[POST]}" onto public com.ph.framework.dto.output.Result com.ph.framework.controller.UserController.login(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse,com.ph.framework.dto.input.LoginInput)
+2019-03-18 11:29:47.964  INFO 6100 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/error]}" onto public org.springframework.http.ResponseEntity<java.util.Map<java.lang.String, java.lang.Object>> org.springframework.boot.autoconfigure.web.BasicErrorController.error(javax.servlet.http.HttpServletRequest)
+2019-03-18 11:29:47.967  INFO 6100 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/error],produces=[text/html]}" onto public org.springframework.web.servlet.ModelAndView org.springframework.boot.autoconfigure.web.BasicErrorController.errorHtml(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)
+2019-03-18 11:29:48.065  INFO 6100 --- [main] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped URL path [/webjars/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2019-03-18 11:29:48.065  INFO 6100 --- [main] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped URL path [/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2019-03-18 11:29:48.273  INFO 6100 --- [main] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped URL path [/**/favicon.ico] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2019-03-18 11:29:49.397  INFO 6100 --- [main] o.s.j.e.a.AnnotationMBeanExporter        : Registering beans for JMX exposure on startup
+2019-03-18 11:29:49.748  INFO 6100 --- [main] s.b.c.e.t.TomcatEmbeddedServletContainer : Tomcat started on port(s): 8700 (http)
+2019-03-18 11:29:49.785  INFO 6100 --- [main] com.ph.framework.BootApplication         : Started BootApplication in 14.179 seconds (JVM running for 16.873)
+2019-03-18 11:29:59.622  INFO 6100 --- [Thread-3] ationConfigEmbeddedWebApplicationContext : Closing org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@27f8302d: startup date [Mon Mar 18 11:29:36 CST 2019]; root of context hierarchy
+2019-03-18 11:29:59.623  INFO 6100 --- [Thread-3] o.s.j.e.a.AnnotationMBeanExporter        : Unregistering JMX-exposed beans on shutdown
+2019-03-18 11:39:33.121  INFO 14836 --- [main] com.ph.framework.BootApplication         : Starting BootApplication v0.0.1-SNAPSHOT on DESKTOP-DH6HAO6 with PID 14836 (E:\github\vue-http-rexsheng\server\server.jar started by 生旭鹏 in E:\github\vue-http-rexsheng\server)
+2019-03-18 11:39:33.135  INFO 14836 --- [main] com.ph.framework.BootApplication         : The following profiles are active: dev
+2019-03-18 11:39:33.281  INFO 14836 --- [main] ationConfigEmbeddedWebApplicationContext : Refreshing org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@27f8302d: startup date [Mon Mar 18 11:39:33 CST 2019]; root of context hierarchy
+2019-03-18 11:39:35.955  INFO 14836 --- [main] f.a.AutowiredAnnotationBeanPostProcessor : JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
+2019-03-18 11:39:37.426  INFO 14836 --- [main] s.b.c.e.t.TomcatEmbeddedServletContainer : Tomcat initialized with port(s): 8700 (http)
+2019-03-18 11:39:37.449  INFO 14836 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2019-03-18 11:39:37.454  INFO 14836 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet Engine: Apache Tomcat/8.5.23
+2019-03-18 11:39:37.675  INFO 14836 --- [localhost-startStop-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2019-03-18 11:39:37.678  INFO 14836 --- [localhost-startStop-1] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 4399 ms
+2019-03-18 11:39:38.112  INFO 14836 --- [localhost-startStop-1] o.s.b.w.servlet.ServletRegistrationBean  : Mapping servlet: 'dispatcherServlet' to [/]
+2019-03-18 11:39:38.126  INFO 14836 --- [localhost-startStop-1] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: 'characterEncodingFilter' to: [/*]
+2019-03-18 11:39:38.128  INFO 14836 --- [localhost-startStop-1] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: 'hiddenHttpMethodFilter' to: [/*]
+2019-03-18 11:39:38.133  INFO 14836 --- [localhost-startStop-1] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: 'httpPutFormContentFilter' to: [/*]
+2019-03-18 11:39:38.149  INFO 14836 --- [localhost-startStop-1] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: 'requestContextFilter' to: [/*]
+2019-03-18 11:39:38.151  INFO 14836 --- [localhost-startStop-1] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: 'corsFilter' to: [/*]
+2019-03-18 11:39:40.235  INFO 14836 --- [main] s.w.s.m.m.a.RequestMappingHandlerAdapter : Looking for @ControllerAdvice: org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@27f8302d: startup date [Mon Mar 18 11:39:33 CST 2019]; root of context hierarchy
+2019-03-18 11:39:40.394  INFO 14836 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/api/upload],methods=[POST]}" onto public com.ph.framework.dto.output.Result com.ph.framework.controller.FileController.uploadFile(javax.servlet.http.HttpServletRequest,com.ph.framework.dto.input.FileUploadInput)
+2019-03-18 11:39:40.399  INFO 14836 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/api/download],methods=[GET]}" onto public void com.ph.framework.controller.FileController.downloadFile(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse,java.lang.String)
+2019-03-18 11:39:40.403  INFO 14836 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/api/user/query],methods=[POST]}" onto public com.ph.framework.dto.output.Result com.ph.framework.controller.UserController.getUsers(com.ph.framework.dto.input.UserInput)
+2019-03-18 11:39:40.405  INFO 14836 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/api/user/query],methods=[GET]}" onto public com.ph.framework.dto.output.Result com.ph.framework.controller.UserController.getUsers(java.lang.String)
+2019-03-18 11:39:40.409  INFO 14836 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/api/user/login],methods=[POST]}" onto public com.ph.framework.dto.output.Result com.ph.framework.controller.UserController.login(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse,com.ph.framework.dto.input.LoginInput)
+2019-03-18 11:39:40.417  INFO 14836 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/error]}" onto public org.springframework.http.ResponseEntity<java.util.Map<java.lang.String, java.lang.Object>> org.springframework.boot.autoconfigure.web.BasicErrorController.error(javax.servlet.http.HttpServletRequest)
+2019-03-18 11:39:40.419  INFO 14836 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/error],produces=[text/html]}" onto public org.springframework.web.servlet.ModelAndView org.springframework.boot.autoconfigure.web.BasicErrorController.errorHtml(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)
+2019-03-18 11:39:40.482  INFO 14836 --- [main] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped URL path [/webjars/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2019-03-18 11:39:40.483  INFO 14836 --- [main] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped URL path [/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2019-03-18 11:39:40.564  INFO 14836 --- [main] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped URL path [/**/favicon.ico] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2019-03-18 11:39:41.250  INFO 14836 --- [main] o.s.j.e.a.AnnotationMBeanExporter        : Registering beans for JMX exposure on startup
+2019-03-18 11:39:41.373  INFO 14836 --- [main] s.b.c.e.t.TomcatEmbeddedServletContainer : Tomcat started on port(s): 8700 (http)
+2019-03-18 11:39:41.385  INFO 14836 --- [main] com.ph.framework.BootApplication         : Started BootApplication in 9.253 seconds (JVM running for 10.096)
+2019-03-18 11:40:05.669  INFO 14836 --- [http-nio-8700-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring FrameworkServlet 'dispatcherServlet'
+2019-03-18 11:40:05.670  INFO 14836 --- [http-nio-8700-exec-1] o.s.web.servlet.DispatcherServlet        : FrameworkServlet 'dispatcherServlet': initialization started
+2019-03-18 11:40:05.716  INFO 14836 --- [http-nio-8700-exec-1] o.s.web.servlet.DispatcherServlet        : FrameworkServlet 'dispatcherServlet': initialization completed in 45 ms
+2019-03-18 13:06:21.421  INFO 14836 --- [http-nio-8700-exec-2] c.p.framework.controller.FileController  : 请求下载LongPathTool(jb51.net).rar
+2019-03-18 13:06:49.855  INFO 14836 --- [http-nio-8700-exec-4] c.p.framework.controller.FileController  : 请求下载LongPathTool(jb51.net).rar
+2019-03-18 13:07:43.030  INFO 14836 --- [http-nio-8700-exec-6] c.p.framework.controller.FileController  : fileUser上传:[Ljava.lang.Integer;@1cf6866b
+2019-03-18 13:07:43.122  INFO 14836 --- [http-nio-8700-exec-6] c.p.framework.controller.FileController  : true接收文件:dw_currency.srd
+2019-03-18 13:07:43.142  INFO 14836 --- [http-nio-8700-exec-6] c.p.framework.controller.FileController  : true接收文件:dw_currency_grid.srd
+2019-03-18 13:07:43.199  INFO 14836 --- [http-nio-8700-exec-6] c.p.framework.controller.FileController  : true接收文件:us_basedata.pbl
+2019-03-18 13:07:43.215  INFO 14836 --- [http-nio-8700-exec-6] c.p.framework.controller.FileController  : true接收文件:w_base_datadetail.srw
+2019-03-18 13:07:43.232  INFO 14836 --- [http-nio-8700-exec-6] c.p.framework.controller.FileController  : true接收文件:w_currency.srw
+2019-03-18 13:20:38.253  INFO 14836 --- [http-nio-8700-exec-9] c.p.framework.controller.FileController  : 请求下载LongPathTool(jb51.net).rar
+2019-03-18 15:29:03.282  INFO 14836 --- [http-nio-8700-exec-10] c.p.framework.controller.FileController  : 请求下载LongPathTool(jb51.net).rar
+2019-03-18 15:29:51.334  INFO 14836 --- [http-nio-8700-exec-3] c.p.framework.controller.FileController  : 请求下载LongPathTool(jb51.net).rar
+2019-03-18 19:56:49.849  INFO 14836 --- [Thread-3] ationConfigEmbeddedWebApplicationContext : Closing org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@27f8302d: startup date [Mon Mar 18 11:39:33 CST 2019]; root of context hierarchy
+2019-03-18 19:56:49.941  INFO 14836 --- [Thread-3] o.s.j.e.a.AnnotationMBeanExporter        : Unregistering JMX-exposed beans on shutdown
+2019-03-19 15:12:38.983  INFO 15020 --- [main] com.ph.framework.BootApplication         : Starting BootApplication v0.0.1-SNAPSHOT on DESKTOP-DH6HAO6 with PID 15020 (E:\github\vue-http-rexsheng\server\server.jar started by 生旭鹏 in E:\github\vue-http-rexsheng\server)
+2019-03-19 15:12:39.037  INFO 15020 --- [main] com.ph.framework.BootApplication         : The following profiles are active: dev
+2019-03-19 15:12:39.223  INFO 15020 --- [main] ationConfigEmbeddedWebApplicationContext : Refreshing org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@27f8302d: startup date [Tue Mar 19 15:12:39 CST 2019]; root of context hierarchy
+2019-03-19 15:12:41.589  INFO 15020 --- [main] f.a.AutowiredAnnotationBeanPostProcessor : JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
+2019-03-19 15:12:43.248  INFO 15020 --- [main] s.b.c.e.t.TomcatEmbeddedServletContainer : Tomcat initialized with port(s): 8700 (http)
+2019-03-19 15:12:43.278  INFO 15020 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2019-03-19 15:12:43.282  INFO 15020 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet Engine: Apache Tomcat/8.5.23
+2019-03-19 15:12:45.336  INFO 15020 --- [localhost-startStop-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2019-03-19 15:12:45.338  INFO 15020 --- [localhost-startStop-1] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 6120 ms
+2019-03-19 15:12:45.745  INFO 15020 --- [localhost-startStop-1] o.s.b.w.servlet.ServletRegistrationBean  : Mapping servlet: 'dispatcherServlet' to [/]
+2019-03-19 15:12:45.755  INFO 15020 --- [localhost-startStop-1] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: 'characterEncodingFilter' to: [/*]
+2019-03-19 15:12:45.760  INFO 15020 --- [localhost-startStop-1] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: 'hiddenHttpMethodFilter' to: [/*]
+2019-03-19 15:12:45.761  INFO 15020 --- [localhost-startStop-1] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: 'httpPutFormContentFilter' to: [/*]
+2019-03-19 15:12:45.762  INFO 15020 --- [localhost-startStop-1] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: 'requestContextFilter' to: [/*]
+2019-03-19 15:12:45.764  INFO 15020 --- [localhost-startStop-1] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: 'corsFilter' to: [/*]
+2019-03-19 15:12:47.334  INFO 15020 --- [main] s.w.s.m.m.a.RequestMappingHandlerAdapter : Looking for @ControllerAdvice: org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@27f8302d: startup date [Tue Mar 19 15:12:39 CST 2019]; root of context hierarchy
+2019-03-19 15:12:47.507  INFO 15020 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/api/download],methods=[GET]}" onto public void com.ph.framework.controller.FileController.downloadFile(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse,java.lang.String)
+2019-03-19 15:12:47.509  INFO 15020 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/api/upload],methods=[POST]}" onto public com.ph.framework.dto.output.Result com.ph.framework.controller.FileController.uploadFile(javax.servlet.http.HttpServletRequest,com.ph.framework.dto.input.FileUploadInput)
+2019-03-19 15:12:47.535  INFO 15020 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/api/user/login],methods=[POST]}" onto public com.ph.framework.dto.output.Result com.ph.framework.controller.UserController.login(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse,com.ph.framework.dto.input.LoginInput)
+2019-03-19 15:12:47.544  INFO 15020 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/api/user/query],methods=[POST]}" onto public com.ph.framework.dto.output.Result com.ph.framework.controller.UserController.getUsers(com.ph.framework.dto.input.UserInput)
+2019-03-19 15:12:47.549  INFO 15020 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/api/user/query],methods=[GET]}" onto public com.ph.framework.dto.output.Result com.ph.framework.controller.UserController.getUsers(java.lang.String)
+2019-03-19 15:12:47.567  INFO 15020 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/error]}" onto public org.springframework.http.ResponseEntity<java.util.Map<java.lang.String, java.lang.Object>> org.springframework.boot.autoconfigure.web.BasicErrorController.error(javax.servlet.http.HttpServletRequest)
+2019-03-19 15:12:47.578  INFO 15020 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/error],produces=[text/html]}" onto public org.springframework.web.servlet.ModelAndView org.springframework.boot.autoconfigure.web.BasicErrorController.errorHtml(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)
+2019-03-19 15:12:47.681  INFO 15020 --- [main] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped URL path [/webjars/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2019-03-19 15:12:47.690  INFO 15020 --- [main] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped URL path [/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2019-03-19 15:12:47.851  INFO 15020 --- [main] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped URL path [/**/favicon.ico] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2019-03-19 15:12:49.082  INFO 15020 --- [main] o.s.j.e.a.AnnotationMBeanExporter        : Registering beans for JMX exposure on startup
+2019-03-19 15:12:49.391  INFO 15020 --- [main] s.b.c.e.t.TomcatEmbeddedServletContainer : Tomcat started on port(s): 8700 (http)
+2019-03-19 15:12:49.417  INFO 15020 --- [main] com.ph.framework.BootApplication         : Started BootApplication in 11.368 seconds (JVM running for 13.554)
+2019-03-19 15:12:53.333  INFO 15020 --- [http-nio-8700-exec-10] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring FrameworkServlet 'dispatcherServlet'
+2019-03-19 15:12:53.334  INFO 15020 --- [http-nio-8700-exec-10] o.s.web.servlet.DispatcherServlet        : FrameworkServlet 'dispatcherServlet': initialization started
+2019-03-19 15:12:53.522  INFO 15020 --- [http-nio-8700-exec-10] o.s.web.servlet.DispatcherServlet        : FrameworkServlet 'dispatcherServlet': initialization completed in 186 ms
+2019-03-19 15:12:55.225  INFO 15020 --- [http-nio-8700-exec-9] c.p.framework.controller.FileController  : 请求下载LongPathTool(jb51.net).rar
+2019-03-19 15:13:01.857  INFO 15020 --- [http-nio-8700-exec-6] c.p.framework.controller.FileController  : 请求下载LongPathTool(jb51.net).rar
+2019-03-19 15:13:51.316  INFO 15020 --- [http-nio-8700-exec-5] c.p.framework.controller.FileController  : 请求下载LongPathTool(jb51.net).rar
+2019-03-19 15:15:27.771  INFO 15020 --- [http-nio-8700-exec-2] c.p.framework.controller.FileController  : 请求下载lol.rar
+2019-03-19 15:16:32.552  INFO 15020 --- [http-nio-8700-exec-9] c.p.framework.controller.FileController  : fileUser上传:[Ljava.lang.Integer;@17f89d86
+2019-03-19 15:16:32.611  INFO 15020 --- [http-nio-8700-exec-9] c.p.framework.controller.FileController  : true接收文件:人员培训.jpg
+2019-03-19 15:16:32.616  INFO 15020 --- [http-nio-8700-exec-9] c.p.framework.controller.FileController  : true接收文件:微信截图_20190318152437.png
+2019-03-19 15:16:32.621  INFO 15020 --- [http-nio-8700-exec-9] c.p.framework.controller.FileController  : true接收文件:微信截图_20190318152831.png
+2019-03-19 15:16:32.629  INFO 15020 --- [http-nio-8700-exec-9] c.p.framework.controller.FileController  : true接收文件:远程指导.jpg
+2019-03-19 15:16:50.563  INFO 15020 --- [http-nio-8700-exec-6] c.p.framework.controller.FileController  : 请求下载f916bc1c-6ca6-4071-be3c-29250338fcc3.jpg
+2019-03-19 15:18:36.955  INFO 15020 --- [http-nio-8700-exec-4] c.p.framework.controller.FileController  : 请求下载jdk-8u112-linux-x64.tar.gz
+2019-03-19 15:19:09.683  INFO 15020 --- [http-nio-8700-exec-2] c.p.framework.controller.FileController  : 请求下载jdk-8u112-linux-x64.tar.gz
+2019-03-19 15:20:20.362  INFO 15020 --- [http-nio-8700-exec-10] c.p.framework.controller.FileController  : 请求下载jdk-8u112-linux-x64.tar.gz
+2019-03-19 15:22:03.316  INFO 15020 --- [http-nio-8700-exec-6] c.p.framework.controller.FileController  : fileUser上传:[Ljava.lang.Integer;@7b634074
+2019-03-19 15:22:03.651  INFO 15020 --- [http-nio-8700-exec-6] c.p.framework.controller.FileController  : true接收文件:jdk-8u112-linux-x64.tar.gz
+2019-03-19 15:22:36.804 ERROR 15020 --- [http-nio-8700-exec-5] o.a.c.c.C.[.[.[/].[dispatcherServlet]    : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed; nested exception is org.springframework.web.multipart.MultipartException: Could not parse multipart servlet request; nested exception is java.lang.IllegalStateException: org.apache.tomcat.util.http.fileupload.FileUploadBase$SizeLimitExceededException: the request was rejected because its size (732851550) exceeds the configured maximum (419430400)] with root cause
+
+org.apache.tomcat.util.http.fileupload.FileUploadBase$SizeLimitExceededException: the request was rejected because its size (732851550) exceeds the configured maximum (419430400)
+	at org.apache.tomcat.util.http.fileupload.FileUploadBase$FileItemIteratorImpl.<init>(FileUploadBase.java:805) ~[tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.tomcat.util.http.fileupload.FileUploadBase.getItemIterator(FileUploadBase.java:256) ~[tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.tomcat.util.http.fileupload.FileUploadBase.parseRequest(FileUploadBase.java:280) ~[tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.catalina.connector.Request.parseParts(Request.java:2864) ~[tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.catalina.connector.Request.parseParameters(Request.java:3211) ~[tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.catalina.connector.Request.getParameter(Request.java:1137) ~[tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.catalina.connector.RequestFacade.getParameter(RequestFacade.java:381) ~[tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.springframework.web.filter.HiddenHttpMethodFilter.doFilterInternal(HiddenHttpMethodFilter.java:75) ~[spring-web-4.3.13.RELEASE.jar!/:4.3.13.RELEASE]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107) ~[spring-web-4.3.13.RELEASE.jar!/:4.3.13.RELEASE]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193) ~[tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166) ~[tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:197) ~[spring-web-4.3.13.RELEASE.jar!/:4.3.13.RELEASE]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107) ~[spring-web-4.3.13.RELEASE.jar!/:4.3.13.RELEASE]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193) ~[tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166) ~[tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:199) ~[tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:96) [tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:478) [tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:140) [tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:81) [tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:87) [tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:342) [tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:803) [tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:66) [tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:868) [tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1459) [tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49) [tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(Unknown Source) [na:1.8.0_101]
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(Unknown Source) [na:1.8.0_101]
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61) [tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at java.lang.Thread.run(Unknown Source) [na:1.8.0_101]
+
+2019-03-19 15:22:37.699 ERROR 15020 --- [http-nio-8700-exec-4] o.a.c.c.C.[.[.[/].[dispatcherServlet]    : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed; nested exception is org.springframework.web.multipart.MultipartException: Could not parse multipart servlet request; nested exception is java.lang.IllegalStateException: org.apache.tomcat.util.http.fileupload.FileUploadBase$SizeLimitExceededException: the request was rejected because its size (732851550) exceeds the configured maximum (419430400)] with root cause
+
+org.apache.tomcat.util.http.fileupload.FileUploadBase$SizeLimitExceededException: the request was rejected because its size (732851550) exceeds the configured maximum (419430400)
+	at org.apache.tomcat.util.http.fileupload.FileUploadBase$FileItemIteratorImpl.<init>(FileUploadBase.java:805) ~[tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.tomcat.util.http.fileupload.FileUploadBase.getItemIterator(FileUploadBase.java:256) ~[tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.tomcat.util.http.fileupload.FileUploadBase.parseRequest(FileUploadBase.java:280) ~[tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.catalina.connector.Request.parseParts(Request.java:2864) ~[tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.catalina.connector.Request.parseParameters(Request.java:3211) ~[tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.catalina.connector.Request.getParameter(Request.java:1137) ~[tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.catalina.connector.RequestFacade.getParameter(RequestFacade.java:381) ~[tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.springframework.web.filter.HiddenHttpMethodFilter.doFilterInternal(HiddenHttpMethodFilter.java:75) ~[spring-web-4.3.13.RELEASE.jar!/:4.3.13.RELEASE]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107) ~[spring-web-4.3.13.RELEASE.jar!/:4.3.13.RELEASE]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193) ~[tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166) ~[tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:197) ~[spring-web-4.3.13.RELEASE.jar!/:4.3.13.RELEASE]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107) ~[spring-web-4.3.13.RELEASE.jar!/:4.3.13.RELEASE]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193) ~[tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166) ~[tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:199) ~[tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:96) [tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:478) [tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:140) [tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:81) [tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:87) [tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:342) [tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:803) [tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:66) [tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:868) [tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1459) [tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49) [tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(Unknown Source) [na:1.8.0_101]
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(Unknown Source) [na:1.8.0_101]
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61) [tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at java.lang.Thread.run(Unknown Source) [na:1.8.0_101]
+
+2019-03-19 15:23:38.091 ERROR 15020 --- [http-nio-8700-exec-2] o.a.c.c.C.[.[.[/].[dispatcherServlet]    : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed; nested exception is org.springframework.web.multipart.MultipartException: Could not parse multipart servlet request; nested exception is java.lang.IllegalStateException: org.apache.tomcat.util.http.fileupload.FileUploadBase$SizeLimitExceededException: the request was rejected because its size (732851550) exceeds the configured maximum (419430400)] with root cause
+
+org.apache.tomcat.util.http.fileupload.FileUploadBase$SizeLimitExceededException: the request was rejected because its size (732851550) exceeds the configured maximum (419430400)
+	at org.apache.tomcat.util.http.fileupload.FileUploadBase$FileItemIteratorImpl.<init>(FileUploadBase.java:805) ~[tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.tomcat.util.http.fileupload.FileUploadBase.getItemIterator(FileUploadBase.java:256) ~[tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.tomcat.util.http.fileupload.FileUploadBase.parseRequest(FileUploadBase.java:280) ~[tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.catalina.connector.Request.parseParts(Request.java:2864) ~[tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.catalina.connector.Request.parseParameters(Request.java:3211) ~[tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.catalina.connector.Request.getParameter(Request.java:1137) ~[tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.catalina.connector.RequestFacade.getParameter(RequestFacade.java:381) ~[tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.springframework.web.filter.HiddenHttpMethodFilter.doFilterInternal(HiddenHttpMethodFilter.java:75) ~[spring-web-4.3.13.RELEASE.jar!/:4.3.13.RELEASE]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107) ~[spring-web-4.3.13.RELEASE.jar!/:4.3.13.RELEASE]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193) ~[tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166) ~[tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:197) ~[spring-web-4.3.13.RELEASE.jar!/:4.3.13.RELEASE]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107) ~[spring-web-4.3.13.RELEASE.jar!/:4.3.13.RELEASE]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193) ~[tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166) ~[tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:199) ~[tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:96) [tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:478) [tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:140) [tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:81) [tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:87) [tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:342) [tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:803) [tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:66) [tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:868) [tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1459) [tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49) [tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(Unknown Source) [na:1.8.0_101]
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(Unknown Source) [na:1.8.0_101]
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61) [tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at java.lang.Thread.run(Unknown Source) [na:1.8.0_101]
+
+2019-03-19 15:23:39.091 ERROR 15020 --- [http-nio-8700-exec-1] o.a.c.c.C.[.[.[/].[dispatcherServlet]    : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed; nested exception is org.springframework.web.multipart.MultipartException: Could not parse multipart servlet request; nested exception is java.lang.IllegalStateException: org.apache.tomcat.util.http.fileupload.FileUploadBase$SizeLimitExceededException: the request was rejected because its size (732851550) exceeds the configured maximum (419430400)] with root cause
+
+org.apache.tomcat.util.http.fileupload.FileUploadBase$SizeLimitExceededException: the request was rejected because its size (732851550) exceeds the configured maximum (419430400)
+	at org.apache.tomcat.util.http.fileupload.FileUploadBase$FileItemIteratorImpl.<init>(FileUploadBase.java:805) ~[tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.tomcat.util.http.fileupload.FileUploadBase.getItemIterator(FileUploadBase.java:256) ~[tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.tomcat.util.http.fileupload.FileUploadBase.parseRequest(FileUploadBase.java:280) ~[tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.catalina.connector.Request.parseParts(Request.java:2864) ~[tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.catalina.connector.Request.parseParameters(Request.java:3211) ~[tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.catalina.connector.Request.getParameter(Request.java:1137) ~[tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.catalina.connector.RequestFacade.getParameter(RequestFacade.java:381) ~[tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.springframework.web.filter.HiddenHttpMethodFilter.doFilterInternal(HiddenHttpMethodFilter.java:75) ~[spring-web-4.3.13.RELEASE.jar!/:4.3.13.RELEASE]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107) ~[spring-web-4.3.13.RELEASE.jar!/:4.3.13.RELEASE]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193) ~[tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166) ~[tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:197) ~[spring-web-4.3.13.RELEASE.jar!/:4.3.13.RELEASE]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107) ~[spring-web-4.3.13.RELEASE.jar!/:4.3.13.RELEASE]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193) ~[tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166) ~[tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:199) ~[tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:96) [tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:478) [tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:140) [tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:81) [tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:87) [tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:342) [tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:803) [tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:66) [tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:868) [tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1459) [tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49) [tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(Unknown Source) [na:1.8.0_101]
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(Unknown Source) [na:1.8.0_101]
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61) [tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at java.lang.Thread.run(Unknown Source) [na:1.8.0_101]
+
+2019-03-19 15:24:20.943  INFO 15020 --- [http-nio-8700-exec-9] c.p.framework.controller.FileController  : fileUser上传:[Ljava.lang.Integer;@69773e9
+2019-03-19 15:24:21.838  INFO 15020 --- [http-nio-8700-exec-9] c.p.framework.controller.FileController  : true接收文件:jdk-8u112-linux-x64 (1).tar.gz
+2019-03-19 15:24:22.373  INFO 15020 --- [http-nio-8700-exec-9] c.p.framework.controller.FileController  : true接收文件:jdk-8u112-linux-x64.tar (1).gz.6kddh68.partial
+2019-03-19 19:06:50.562  INFO 15020 --- [Thread-3] ationConfigEmbeddedWebApplicationContext : Closing org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@27f8302d: startup date [Tue Mar 19 15:12:39 CST 2019]; root of context hierarchy
+2019-03-19 19:06:50.598  INFO 15020 --- [Thread-3] o.s.j.e.a.AnnotationMBeanExporter        : Unregistering JMX-exposed beans on shutdown
+2019-03-19 23:36:24.587  INFO 15584 --- [main] com.ph.framework.BootApplication         : Starting BootApplication v0.0.1-SNAPSHOT on DESKTOP-DH6HAO6 with PID 15584 (E:\github\vue-http-rexsheng\server\server.jar started by 生旭鹏 in E:\github\vue-http-rexsheng\server)
+2019-03-19 23:36:24.597  INFO 15584 --- [main] com.ph.framework.BootApplication         : The following profiles are active: dev
+2019-03-19 23:36:24.763  INFO 15584 --- [main] ationConfigEmbeddedWebApplicationContext : Refreshing org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@27f8302d: startup date [Tue Mar 19 23:36:24 CST 2019]; root of context hierarchy
+2019-03-19 23:36:26.902  INFO 15584 --- [main] f.a.AutowiredAnnotationBeanPostProcessor : JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
+2019-03-19 23:36:28.600  INFO 15584 --- [main] s.b.c.e.t.TomcatEmbeddedServletContainer : Tomcat initialized with port(s): 8700 (http)
+2019-03-19 23:36:28.622  INFO 15584 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2019-03-19 23:36:28.628  INFO 15584 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet Engine: Apache Tomcat/8.5.23
+2019-03-19 23:36:31.216  INFO 15584 --- [localhost-startStop-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2019-03-19 23:36:31.218  INFO 15584 --- [localhost-startStop-1] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 6460 ms
+2019-03-19 23:36:31.575  INFO 15584 --- [localhost-startStop-1] o.s.b.w.servlet.ServletRegistrationBean  : Mapping servlet: 'dispatcherServlet' to [/]
+2019-03-19 23:36:31.584  INFO 15584 --- [localhost-startStop-1] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: 'characterEncodingFilter' to: [/*]
+2019-03-19 23:36:31.585  INFO 15584 --- [localhost-startStop-1] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: 'hiddenHttpMethodFilter' to: [/*]
+2019-03-19 23:36:31.586  INFO 15584 --- [localhost-startStop-1] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: 'httpPutFormContentFilter' to: [/*]
+2019-03-19 23:36:31.588  INFO 15584 --- [localhost-startStop-1] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: 'requestContextFilter' to: [/*]
+2019-03-19 23:36:31.589  INFO 15584 --- [localhost-startStop-1] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: 'corsFilter' to: [/*]
+2019-03-19 23:36:33.151  INFO 15584 --- [main] s.w.s.m.m.a.RequestMappingHandlerAdapter : Looking for @ControllerAdvice: org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@27f8302d: startup date [Tue Mar 19 23:36:24 CST 2019]; root of context hierarchy
+2019-03-19 23:36:33.322  INFO 15584 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/api/upload],methods=[POST]}" onto public com.ph.framework.dto.output.Result com.ph.framework.controller.FileController.uploadFile(javax.servlet.http.HttpServletRequest,com.ph.framework.dto.input.FileUploadInput)
+2019-03-19 23:36:33.329  INFO 15584 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/api/download],methods=[GET]}" onto public void com.ph.framework.controller.FileController.downloadFile(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse,java.lang.String)
+2019-03-19 23:36:33.334  INFO 15584 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/api/user/query],methods=[POST]}" onto public com.ph.framework.dto.output.Result com.ph.framework.controller.UserController.getUsers(com.ph.framework.dto.input.UserInput)
+2019-03-19 23:36:33.338  INFO 15584 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/api/user/query],methods=[GET]}" onto public com.ph.framework.dto.output.Result com.ph.framework.controller.UserController.getUsers(java.lang.String)
+2019-03-19 23:36:33.340  INFO 15584 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/api/user/login],methods=[POST]}" onto public com.ph.framework.dto.output.Result com.ph.framework.controller.UserController.login(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse,com.ph.framework.dto.input.LoginInput)
+2019-03-19 23:36:33.348  INFO 15584 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/error]}" onto public org.springframework.http.ResponseEntity<java.util.Map<java.lang.String, java.lang.Object>> org.springframework.boot.autoconfigure.web.BasicErrorController.error(javax.servlet.http.HttpServletRequest)
+2019-03-19 23:36:33.352  INFO 15584 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/error],produces=[text/html]}" onto public org.springframework.web.servlet.ModelAndView org.springframework.boot.autoconfigure.web.BasicErrorController.errorHtml(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)
+2019-03-19 23:36:33.419  INFO 15584 --- [main] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped URL path [/webjars/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2019-03-19 23:36:33.420  INFO 15584 --- [main] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped URL path [/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2019-03-19 23:36:33.506  INFO 15584 --- [main] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped URL path [/**/favicon.ico] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2019-03-19 23:36:34.144  INFO 15584 --- [main] o.s.j.e.a.AnnotationMBeanExporter        : Registering beans for JMX exposure on startup
+2019-03-19 23:36:34.298  INFO 15584 --- [main] s.b.c.e.t.TomcatEmbeddedServletContainer : Tomcat started on port(s): 8700 (http)
+2019-03-19 23:36:34.327  INFO 15584 --- [main] com.ph.framework.BootApplication         : Started BootApplication in 10.666 seconds (JVM running for 13.218)
+2019-03-19 23:36:34.700  INFO 15584 --- [http-nio-8700-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring FrameworkServlet 'dispatcherServlet'
+2019-03-19 23:36:34.700  INFO 15584 --- [http-nio-8700-exec-1] o.s.web.servlet.DispatcherServlet        : FrameworkServlet 'dispatcherServlet': initialization started
+2019-03-19 23:36:34.945  INFO 15584 --- [http-nio-8700-exec-1] o.s.web.servlet.DispatcherServlet        : FrameworkServlet 'dispatcherServlet': initialization completed in 243 ms
+2019-03-19 23:37:02.798  INFO 15584 --- [http-nio-8700-exec-4] c.p.framework.controller.FileController  : 请求下载LongPathTool(jb51.net).rar
+2019-03-19 23:37:41.993 ERROR 15584 --- [http-nio-8700-exec-6] o.a.c.c.C.[.[.[/].[dispatcherServlet]    : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed; nested exception is org.springframework.web.multipart.MultipartException: Could not parse multipart servlet request; nested exception is java.lang.IllegalStateException: org.apache.tomcat.util.http.fileupload.FileUploadBase$SizeLimitExceededException: the request was rejected because its size (1570537706) exceeds the configured maximum (419430400)] with root cause
+
+org.apache.tomcat.util.http.fileupload.FileUploadBase$SizeLimitExceededException: the request was rejected because its size (1570537706) exceeds the configured maximum (419430400)
+	at org.apache.tomcat.util.http.fileupload.FileUploadBase$FileItemIteratorImpl.<init>(FileUploadBase.java:805) ~[tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.tomcat.util.http.fileupload.FileUploadBase.getItemIterator(FileUploadBase.java:256) ~[tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.tomcat.util.http.fileupload.FileUploadBase.parseRequest(FileUploadBase.java:280) ~[tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.catalina.connector.Request.parseParts(Request.java:2864) ~[tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.catalina.connector.Request.parseParameters(Request.java:3211) ~[tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.catalina.connector.Request.getParameter(Request.java:1137) ~[tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.catalina.connector.RequestFacade.getParameter(RequestFacade.java:381) ~[tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.springframework.web.filter.HiddenHttpMethodFilter.doFilterInternal(HiddenHttpMethodFilter.java:75) ~[spring-web-4.3.13.RELEASE.jar!/:4.3.13.RELEASE]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107) ~[spring-web-4.3.13.RELEASE.jar!/:4.3.13.RELEASE]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193) ~[tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166) ~[tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:197) ~[spring-web-4.3.13.RELEASE.jar!/:4.3.13.RELEASE]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107) ~[spring-web-4.3.13.RELEASE.jar!/:4.3.13.RELEASE]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193) ~[tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166) ~[tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:199) ~[tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:96) [tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:478) [tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:140) [tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:81) [tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:87) [tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:342) [tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:803) [tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:66) [tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:868) [tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1459) [tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49) [tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(Unknown Source) [na:1.8.0_101]
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(Unknown Source) [na:1.8.0_101]
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61) [tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at java.lang.Thread.run(Unknown Source) [na:1.8.0_101]
+
+2019-03-19 23:38:14.983 ERROR 15584 --- [http-nio-8700-exec-7] o.a.c.c.C.[.[.[/].[dispatcherServlet]    : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed; nested exception is org.springframework.web.multipart.MultipartException: Could not parse multipart servlet request; nested exception is java.lang.IllegalStateException: org.apache.tomcat.util.http.fileupload.FileUploadBase$SizeLimitExceededException: the request was rejected because its size (1570537706) exceeds the configured maximum (419430400)] with root cause
+
+org.apache.tomcat.util.http.fileupload.FileUploadBase$SizeLimitExceededException: the request was rejected because its size (1570537706) exceeds the configured maximum (419430400)
+	at org.apache.tomcat.util.http.fileupload.FileUploadBase$FileItemIteratorImpl.<init>(FileUploadBase.java:805) ~[tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.tomcat.util.http.fileupload.FileUploadBase.getItemIterator(FileUploadBase.java:256) ~[tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.tomcat.util.http.fileupload.FileUploadBase.parseRequest(FileUploadBase.java:280) ~[tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.catalina.connector.Request.parseParts(Request.java:2864) ~[tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.catalina.connector.Request.parseParameters(Request.java:3211) ~[tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.catalina.connector.Request.getParameter(Request.java:1137) ~[tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.catalina.connector.RequestFacade.getParameter(RequestFacade.java:381) ~[tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.springframework.web.filter.HiddenHttpMethodFilter.doFilterInternal(HiddenHttpMethodFilter.java:75) ~[spring-web-4.3.13.RELEASE.jar!/:4.3.13.RELEASE]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107) ~[spring-web-4.3.13.RELEASE.jar!/:4.3.13.RELEASE]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193) ~[tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166) ~[tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:197) ~[spring-web-4.3.13.RELEASE.jar!/:4.3.13.RELEASE]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107) ~[spring-web-4.3.13.RELEASE.jar!/:4.3.13.RELEASE]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193) ~[tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166) ~[tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:199) ~[tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:96) [tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:478) [tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:140) [tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:81) [tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:87) [tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:342) [tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:803) [tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:66) [tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:868) [tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1459) [tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49) [tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(Unknown Source) [na:1.8.0_101]
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(Unknown Source) [na:1.8.0_101]
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61) [tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at java.lang.Thread.run(Unknown Source) [na:1.8.0_101]
+
+2019-03-19 23:39:21.377 ERROR 15584 --- [http-nio-8700-exec-9] o.a.c.c.C.[.[.[/].[dispatcherServlet]    : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed; nested exception is org.springframework.web.multipart.MultipartException: Could not parse multipart servlet request; nested exception is java.lang.IllegalStateException: org.apache.tomcat.util.http.fileupload.FileUploadBase$SizeLimitExceededException: the request was rejected because its size (1763489898) exceeds the configured maximum (419430400)] with root cause
+
+org.apache.tomcat.util.http.fileupload.FileUploadBase$SizeLimitExceededException: the request was rejected because its size (1763489898) exceeds the configured maximum (419430400)
+	at org.apache.tomcat.util.http.fileupload.FileUploadBase$FileItemIteratorImpl.<init>(FileUploadBase.java:805) ~[tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.tomcat.util.http.fileupload.FileUploadBase.getItemIterator(FileUploadBase.java:256) ~[tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.tomcat.util.http.fileupload.FileUploadBase.parseRequest(FileUploadBase.java:280) ~[tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.catalina.connector.Request.parseParts(Request.java:2864) ~[tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.catalina.connector.Request.parseParameters(Request.java:3211) ~[tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.catalina.connector.Request.getParameter(Request.java:1137) ~[tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.catalina.connector.RequestFacade.getParameter(RequestFacade.java:381) ~[tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.springframework.web.filter.HiddenHttpMethodFilter.doFilterInternal(HiddenHttpMethodFilter.java:75) ~[spring-web-4.3.13.RELEASE.jar!/:4.3.13.RELEASE]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107) ~[spring-web-4.3.13.RELEASE.jar!/:4.3.13.RELEASE]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193) ~[tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166) ~[tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:197) ~[spring-web-4.3.13.RELEASE.jar!/:4.3.13.RELEASE]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107) ~[spring-web-4.3.13.RELEASE.jar!/:4.3.13.RELEASE]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193) ~[tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166) ~[tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:199) ~[tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:96) [tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:478) [tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:140) [tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:81) [tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:87) [tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:342) [tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:803) [tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:66) [tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:868) [tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1459) [tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49) [tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(Unknown Source) [na:1.8.0_101]
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(Unknown Source) [na:1.8.0_101]
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61) [tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at java.lang.Thread.run(Unknown Source) [na:1.8.0_101]
+
+2019-03-19 23:39:46.532 ERROR 15584 --- [http-nio-8700-exec-10] o.a.c.c.C.[.[.[/].[dispatcherServlet]    : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed; nested exception is org.springframework.web.multipart.MultipartException: Could not parse multipart servlet request; nested exception is java.lang.IllegalStateException: org.apache.tomcat.util.http.fileupload.FileUploadBase$SizeLimitExceededException: the request was rejected because its size (1763489898) exceeds the configured maximum (419430400)] with root cause
+
+org.apache.tomcat.util.http.fileupload.FileUploadBase$SizeLimitExceededException: the request was rejected because its size (1763489898) exceeds the configured maximum (419430400)
+	at org.apache.tomcat.util.http.fileupload.FileUploadBase$FileItemIteratorImpl.<init>(FileUploadBase.java:805) ~[tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.tomcat.util.http.fileupload.FileUploadBase.getItemIterator(FileUploadBase.java:256) ~[tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.tomcat.util.http.fileupload.FileUploadBase.parseRequest(FileUploadBase.java:280) ~[tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.catalina.connector.Request.parseParts(Request.java:2864) ~[tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.catalina.connector.Request.parseParameters(Request.java:3211) ~[tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.catalina.connector.Request.getParameter(Request.java:1137) ~[tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.catalina.connector.RequestFacade.getParameter(RequestFacade.java:381) ~[tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.springframework.web.filter.HiddenHttpMethodFilter.doFilterInternal(HiddenHttpMethodFilter.java:75) ~[spring-web-4.3.13.RELEASE.jar!/:4.3.13.RELEASE]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107) ~[spring-web-4.3.13.RELEASE.jar!/:4.3.13.RELEASE]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193) ~[tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166) ~[tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:197) ~[spring-web-4.3.13.RELEASE.jar!/:4.3.13.RELEASE]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107) ~[spring-web-4.3.13.RELEASE.jar!/:4.3.13.RELEASE]
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:193) ~[tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:166) ~[tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:199) ~[tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:96) [tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:478) [tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:140) [tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:81) [tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:87) [tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:342) [tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:803) [tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:66) [tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:868) [tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1459) [tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49) [tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(Unknown Source) [na:1.8.0_101]
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(Unknown Source) [na:1.8.0_101]
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61) [tomcat-embed-core-8.5.23.jar!/:8.5.23]
+	at java.lang.Thread.run(Unknown Source) [na:1.8.0_101]
+
+2019-03-19 23:43:24.881  INFO 15584 --- [Thread-3] ationConfigEmbeddedWebApplicationContext : Closing org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@27f8302d: startup date [Tue Mar 19 23:36:24 CST 2019]; root of context hierarchy
+2019-03-19 23:43:24.897  INFO 15584 --- [Thread-3] o.s.j.e.a.AnnotationMBeanExporter        : Unregistering JMX-exposed beans on shutdown
+2019-03-19 23:43:29.326  INFO 6164 --- [main] com.ph.framework.BootApplication         : Starting BootApplication v0.0.1-SNAPSHOT on DESKTOP-DH6HAO6 with PID 6164 (E:\github\vue-http-rexsheng\server\server.jar started by 生旭鹏 in E:\github\vue-http-rexsheng\server)
+2019-03-19 23:43:29.334  INFO 6164 --- [main] com.ph.framework.BootApplication         : The following profiles are active: dev
+2019-03-19 23:43:29.512  INFO 6164 --- [main] ationConfigEmbeddedWebApplicationContext : Refreshing org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@27f8302d: startup date [Tue Mar 19 23:43:29 CST 2019]; root of context hierarchy
+2019-03-19 23:43:31.803  INFO 6164 --- [main] f.a.AutowiredAnnotationBeanPostProcessor : JSR-330 'javax.inject.Inject' annotation found and supported for autowiring
+2019-03-19 23:43:33.012  INFO 6164 --- [main] s.b.c.e.t.TomcatEmbeddedServletContainer : Tomcat initialized with port(s): 8700 (http)
+2019-03-19 23:43:33.037  INFO 6164 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2019-03-19 23:43:33.042  INFO 6164 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet Engine: Apache Tomcat/8.5.23
+2019-03-19 23:43:33.248  INFO 6164 --- [localhost-startStop-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2019-03-19 23:43:33.250  INFO 6164 --- [localhost-startStop-1] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 3743 ms
+2019-03-19 23:43:33.676  INFO 6164 --- [localhost-startStop-1] o.s.b.w.servlet.ServletRegistrationBean  : Mapping servlet: 'dispatcherServlet' to [/]
+2019-03-19 23:43:33.693  INFO 6164 --- [localhost-startStop-1] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: 'characterEncodingFilter' to: [/*]
+2019-03-19 23:43:33.696  INFO 6164 --- [localhost-startStop-1] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: 'hiddenHttpMethodFilter' to: [/*]
+2019-03-19 23:43:33.698  INFO 6164 --- [localhost-startStop-1] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: 'httpPutFormContentFilter' to: [/*]
+2019-03-19 23:43:33.699  INFO 6164 --- [localhost-startStop-1] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: 'requestContextFilter' to: [/*]
+2019-03-19 23:43:33.701  INFO 6164 --- [localhost-startStop-1] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: 'corsFilter' to: [/*]
+2019-03-19 23:43:35.417  INFO 6164 --- [main] s.w.s.m.m.a.RequestMappingHandlerAdapter : Looking for @ControllerAdvice: org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@27f8302d: startup date [Tue Mar 19 23:43:29 CST 2019]; root of context hierarchy
+2019-03-19 23:43:35.589  INFO 6164 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/api/upload],methods=[POST]}" onto public com.ph.framework.dto.output.Result com.ph.framework.controller.FileController.uploadFile(javax.servlet.http.HttpServletRequest,com.ph.framework.dto.input.FileUploadInput)
+2019-03-19 23:43:35.592  INFO 6164 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/api/download],methods=[GET]}" onto public void com.ph.framework.controller.FileController.downloadFile(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse,java.lang.String)
+2019-03-19 23:43:35.596  INFO 6164 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/api/user/login],methods=[POST]}" onto public com.ph.framework.dto.output.Result com.ph.framework.controller.UserController.login(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse,com.ph.framework.dto.input.LoginInput)
+2019-03-19 23:43:35.598  INFO 6164 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/api/user/query],methods=[POST]}" onto public com.ph.framework.dto.output.Result com.ph.framework.controller.UserController.getUsers(com.ph.framework.dto.input.UserInput)
+2019-03-19 23:43:35.606  INFO 6164 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/api/user/query],methods=[GET]}" onto public com.ph.framework.dto.output.Result com.ph.framework.controller.UserController.getUsers(java.lang.String)
+2019-03-19 23:43:35.612  INFO 6164 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/error]}" onto public org.springframework.http.ResponseEntity<java.util.Map<java.lang.String, java.lang.Object>> org.springframework.boot.autoconfigure.web.BasicErrorController.error(javax.servlet.http.HttpServletRequest)
+2019-03-19 23:43:35.616  INFO 6164 --- [main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "{[/error],produces=[text/html]}" onto public org.springframework.web.servlet.ModelAndView org.springframework.boot.autoconfigure.web.BasicErrorController.errorHtml(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)
+2019-03-19 23:43:35.682  INFO 6164 --- [main] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped URL path [/webjars/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2019-03-19 23:43:35.684  INFO 6164 --- [main] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped URL path [/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2019-03-19 23:43:35.772  INFO 6164 --- [main] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped URL path [/**/favicon.ico] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]
+2019-03-19 23:43:36.580  INFO 6164 --- [main] o.s.j.e.a.AnnotationMBeanExporter        : Registering beans for JMX exposure on startup
+2019-03-19 23:43:36.727  INFO 6164 --- [main] s.b.c.e.t.TomcatEmbeddedServletContainer : Tomcat started on port(s): 8700 (http)
+2019-03-19 23:43:36.754  INFO 6164 --- [main] com.ph.framework.BootApplication         : Started BootApplication in 8.398 seconds (JVM running for 9.33)
+2019-03-19 23:43:50.830  INFO 6164 --- [http-nio-8700-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring FrameworkServlet 'dispatcherServlet'
+2019-03-19 23:43:50.831  INFO 6164 --- [http-nio-8700-exec-1] o.s.web.servlet.DispatcherServlet        : FrameworkServlet 'dispatcherServlet': initialization started
+2019-03-19 23:43:50.874  INFO 6164 --- [http-nio-8700-exec-1] o.s.web.servlet.DispatcherServlet        : FrameworkServlet 'dispatcherServlet': initialization completed in 42 ms
+2019-03-19 23:46:32.437  INFO 6164 --- [http-nio-8700-exec-3] c.p.framework.controller.FileController  : fileUser上传:[Ljava.lang.Integer;@7261d00f
+2019-03-19 23:46:33.684  INFO 6164 --- [http-nio-8700-exec-3] c.p.framework.controller.FileController  : true接收文件:04 编码实现2.zip
+2019-03-19 23:47:53.963  INFO 6164 --- [http-nio-8700-exec-5] c.p.framework.controller.FileController  : 请求下载b87df160-06f4-494b-89e5-08c08fc81116.zip
+2019-03-19 23:53:31.559  INFO 6164 --- [Thread-3] ationConfigEmbeddedWebApplicationContext : Closing org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@27f8302d: startup date [Tue Mar 19 23:43:29 CST 2019]; root of context hierarchy
+2019-03-19 23:53:31.567  INFO 6164 --- [Thread-3] o.s.j.e.a.AnnotationMBeanExporter        : Unregistering JMX-exposed beans on shutdown

@@ -6,14 +6,15 @@ rexShengPlugin.install = function(Vue, options={}) {
      * author:RexSheng
      * date:2018/11/06
      */
-    let defaultFormatCallback=function(d){return d;};
+    let defaultFormatCallback=function(d){return d.data;};
     let instanceName=options.instanceName || "$ajax";
     let mockInstanceName=options.mockInstanceName || "$mock";
     let VueGlobalInstanceName=instanceName.replace(/\$/g,'');//全局替换
     let successFormatCallback=options.successFormat || options.resultFormat || defaultFormatCallback;//返回数据的格式化
     let errorFormatCallback=options.errorFormat || options.resultFormat || defaultFormatCallback;
     let userDefaultConfig=options.defaultConfig || {};
-
+    let requestInterceptor=function(d){return d;};
+    let responseInterceptor=function(res){return res;};
 
     let xmlHttpRequest = function(sc) {
         this.instance = null;
@@ -57,11 +58,13 @@ rexShengPlugin.install = function(Vue, options={}) {
             }
             return url;
         };
-        this.formatResult=function(data,req,config,success){
+        this.formatResult=function(scope,data,req,config,success){
             var headers={};
-            req.getAllResponseHeaders().split("\r\n").filter(m=>m!=null && m.length>0 && m.indexOf(':')>-1).forEach(item=>{
-                var arr=item.split(":")
-                headers[arr[0]]=arr[1];
+            req.getAllResponseHeaders().trim().split(/[\r\n]+/).forEach(item=>{
+                var parts=item.split(": ")
+                var header = parts.shift();
+                var value = parts.join(': ');
+                headers[header]=value;
             })
             var d={
                 data:data,
@@ -71,12 +74,19 @@ rexShengPlugin.install = function(Vue, options={}) {
                 config:config,
                 request:req
             }
-            if(success){
-                return successFormatCallback(d);
-            }
-            else{
-                return errorFormatCallback(d);
-            }
+            return new Promise((resolve,reject)=>{
+                Promise.resolve(responseInterceptor.call(scope,d)).then(rlt=>{
+                    if(success){
+                        resolve([successFormatCallback(rlt),d]) ;
+                    }
+                    else{
+                        resolve([errorFormatCallback(rlt),d]) ;
+                    }
+                }).catch(err=>{
+                    reject([err,d]) ;
+                });
+            });
+            
         },
         /**
          * author:RexSheng
@@ -92,6 +102,7 @@ rexShengPlugin.install = function(Vue, options={}) {
          * formData:true//使用formdata表单发送数据，通常用于文件上传
          * data:Object/Array //请求发送的数据
          * dataType:"json"//表明要发送的数据格式，
+         * responseType:""//返回的数据类型"","json","blob","text","arraybuffer","document"
          * transform:function(data){}//自定义格式化数据
          * loadstart:function(){}//请求开始时的事件，
          * ontimeout:function(d){}//超时事件
@@ -106,7 +117,7 @@ rexShengPlugin.install = function(Vue, options={}) {
             var formatResult=this.formatResult;
             var opt=Object.assign(this.defaultConfig,userDefaultConfig, config);
             var request = this.createInstance();
-            opt.url = this.formatUrl(opt.url, opt);
+            opt.url = this.formatUrl(opt.url, opt.data);
             request.open(opt.type, opt.url, opt.async);
             if (opt.dataType.toLowerCase() === 'json') {
                 request.setRequestHeader("Content-type", "application/json;charset=UTF-8");
@@ -117,6 +128,9 @@ rexShengPlugin.install = function(Vue, options={}) {
                     request.setRequestHeader(item, opt.headers[item]);
                 });
             }
+            if(opt.responseType!=null){
+                request.responseType=opt.responseType;
+            }
             if (opt.timeout) {
                 request.timeout = opt.timeout;
             }
@@ -124,37 +138,37 @@ rexShengPlugin.install = function(Vue, options={}) {
                 request.withCredentials = opt.withCredentials;
             }
 
-            if (opt.formData) {
-                if (opt.data != null) {
-                    var formData = new FormData();
-                    Object.keys(opt.data).forEach(key => {
-                        if (opt.data[key].constructor == Array) {
-                            for (var i = 0; i < opt.data[key].length; i++) {
-                                var subItem = opt.data[key][i];
-                                if (subItem.constructor == Object) {
-                                    Object.keys(subItem).forEach(subKey => {
-                                        formData.append(key + (i==0?"":"[" + i + "]")+"[" + subKey + "]", subItem[subKey]);
-                                    });
-                                } else {
-                                    formData.append(key + (i==0?"":"[" + i + "]"), subItem);
+            if(opt.transform){
+                opt.data = opt.transform.call(scope,opt.data);
+            }
+            else{
+                if (opt.dataType.toLowerCase() === 'formdata') {
+                    if (opt.data != null) {
+                        var formData = new FormData();
+                        Object.keys(opt.data).forEach(key => {
+                            if (opt.data[key].constructor === Array || opt.data[key].constructor === FileList) {
+                                for (var i = 0; i < opt.data[key].length; i++) {
+                                    var subItem = opt.data[key][i];
+                                    if (subItem.constructor == Object) {
+                                        Object.keys(subItem).forEach(subKey => {
+                                            formData.append(key + (i==0?"":"[" + i + "]")+"[" + subKey + "]", subItem[subKey]);
+                                        });
+                                    } else {
+                                        formData.append(key + (i==0?"":"[" + i + "]"), subItem);
+                                    }
                                 }
+                            } else {
+                                formData.append(key, opt.data[key]);
                             }
-                        } else {
-                            formData.append(key, opt.data[key]);
-                        }
-                    });
-                    opt.data = formData;
-                }
-            } else {
-                if(opt.transform){
-                    opt.data = opt.transform.call(scope,opt.data);
-                }
-                else{
-                    if (opt.type.toLowerCase() == "post" && opt.dataType.toLowerCase() === 'json' && opt.data) {
-                        opt.data = JSON.stringify(opt.data);
+                        });
+                        opt.data = formData;
                     }
                 }
+                if (opt.type.toLowerCase() === "post" && opt.dataType.toLowerCase() === 'json' && opt.data) {
+                    opt.data = JSON.stringify(opt.data);
+                }
             }
+
             /**
              * request.readyState
              * 0	Uninitialized	初始化状态。XMLHttpRequest 对象已创建或已被 abort() 方法重置。
@@ -165,103 +179,162 @@ rexShengPlugin.install = function(Vue, options={}) {
              */
             var currentRequest = new Promise(function(resolve, reject) {
                 try {
-                    request.send(opt.data);
-                    request.onreadystatechange = function() {
-                        if (opt.loadstart) {
+                    Promise.resolve(requestInterceptor.call(scope,opt)).then(function(newOpt){
+                        if (newOpt.uploadProgress) {
+                            request.upload.onprogress = function(pe) {
+                                newOpt.uploadProgress.call(scope, pe);
+                            }
+                        }
+                        if (newOpt.loadstart) {
                             request.onloadstart = function() {
-                                opt.loadstart.call(scope);
+                                newOpt.loadstart.call(scope);
                             }
                         }
-                        if (opt.ontimeout) {
+                        if (newOpt.ontimeout) {
                             request.ontimeout = function(pe) {
-                                opt.ontimeout.call(scope,pe);
+                                newOpt.ontimeout.call(scope,pe);
                             }
                         }
-                        if (opt.progress) {
+                        if (newOpt.progress) {
                             request.onprogress = function(pe) {
-                                opt.progress.call(scope, pe);
+                                newOpt.progress.call(scope, pe);
                             }
                         }
-                        if (opt.loaded) {
+                        
+                        if (newOpt.loaded) {
                             request.onloadend = function() {
-                                opt.loaded.call(scope, request);
+                                newOpt.loaded.call(scope, request);
                             }
                         }
-                        if (opt.cancel) {
-                            abortIntervalHandler = setInterval(function() {
-                                opt.cancel.call(scope, function() {
-                                    request.abort();
-                                    clearInterval(abortIntervalHandler);
-                                    abortIntervalHandler = null;
-                                });
-                            }, 0);
-                        }
-                        if (request.readyState === 4) { // 4代表执行完成
-                            request._complete = true;
-                            if (request.status === 200) { // 200代表执行成功
-                                if (request.responseText && opt.dataType.toLowerCase() === 'json') {
-                                    new Promise(function(res, rej) {
-                                            var cc = JSON.parse(request.responseText);
-                                            res(cc);
-                                        })
-                                        .then(d => resolve(formatResult(d, request,opt,true)))
-                                        .catch(e => reject(formatResult(e, request,opt,false)))
-                                } else if (opt.dataType.toLowerCase() === 'xml') {
-                                    resolve(formatResult(request.responseXML, request,opt,true));
-                                } else if (request.responseText) {
-                                    resolve(formatResult(request.responseText, request,opt,true));
-                                } else {
-                                    resolve(formatResult(request.response, request,opt,true));
+                        request.send(newOpt.data);
+                        request.onreadystatechange = function() {
+                            
+                            if (newOpt.cancel) {
+                                abortIntervalHandler = setInterval(function() {
+                                    newOpt.cancel.call(scope, function() {
+                                        request.abort();
+                                        clearInterval(abortIntervalHandler);
+                                        abortIntervalHandler = null;
+                                    });
+                                }, 0);
+                            }
+                            if (request.readyState === 4) { // 4代表执行完成
+                                request._complete = true;
+                                if(newOpt.complete){
+                                    newOpt.complete.call(scope);
                                 }
-
-                            } else {
-                                new Promise(function(res, rej) {
-                                    var cc = request.response;
-                                    if (request.responseText && opt.dataType.toLowerCase() === 'json') {
-                                        cc = JSON.parse(request.responseText);
-                                    } else if (opt.dataType.toLowerCase() === 'xml') {
-                                        cc = request.responseXML;
-                                    } else if (request.responseText) {
-                                        cc = request.responseText;
+                                var responseContentType=(request.getResponseHeader('content-type') || "").toLowerCase()
+                                if (request.status === 200) { // 200代表执行成功
+                                    if (responseContentType.indexOf("application/json")>-1) {
+                                            new Promise(function(res, rej) {
+                                                var cc = JSON.parse(request.response);
+                                                res(cc);
+                                            })
+                                            .then(d =>
+                                                formatResult(scope,d, request,newOpt,true).
+                                                    then(dd=>{
+                                                        if(newOpt.success){
+                                                            newOpt.success.apply(scope,dd);
+                                                        }
+                                                        resolve(dd[0]);
+                                                    }).
+                                                    catch(ee=>reject(ee[0]))
+                                             )
+                                            .catch(e => formatResult(scope,e, request,newOpt,false).then(dd=>{
+                                                if(newOpt.error){
+                                                    newOpt.error.apply(scope,dd);
+                                                }
+                                                reject(dd[0]);
+                                            }).catch(ee=>reject(ee[0]))
+                                            )
+                                        
+                                    } else if (responseContentType.indexOf("application/xml")>-1) {
+                                        formatResult(scope,request.responseXML, request,newOpt,true).then(dd=>{
+                                            if(newOpt.success){
+                                                newOpt.success.apply(scope,dd);
+                                            }
+                                            resolve(dd[0]);
+                                        }).catch(ee=>{
+                                            if(newOpt.error){
+                                                newOpt.error.apply(scope,ee);
+                                            }
+                                            reject(ee[0]);
+                                        });
                                     } else {
-                                        cc = request.response;
+                                        formatResult(scope,request.response, request,newOpt,true).then(dd=>{
+                                            if(newOpt.success){
+                                                newOpt.success.apply(scope,dd);
+                                            }
+                                            resolve(dd);
+                                        }).catch(ee=>{
+                                            if(newOpt.error){
+                                                newOpt.error.apply(scope,ee);
+                                            }
+                                            reject(ee[0]);
+                                        });
                                     }
-                                    rej(cc);
-                                })
-                                .then(d => reject(formatResult(d, request,opt,true)))
-                                .catch(e => reject(formatResult(e, request,opt,false)))
+
+                                } else {
+                                    new Promise(function(res, rej) {
+                                        var cc = request.response;
+                                        if (responseContentType.indexOf("application/json")>-1) {
+                                            cc = JSON.parse(request.response);
+                                        } else if (responseContentType.indexOf("application/xml")>-1) {
+                                            cc = request.responseXML;
+                                        } else {
+                                            cc = request.response;
+                                        }
+                                        rej(cc);
+                                    })
+                                    .then(d => formatResult(scope,d, request,newOpt,true).
+                                        then(dd=>{
+                                            if(newOpt.error){
+                                                newOpt.error.apply(scope,dd);
+                                            }
+                                            reject(dd);
+                                        }).
+                                        catch(ee=>reject(ee[0]))
+                                    )
+                                    .catch(e => 
+                                        formatResult(scope,e, request,newOpt,false).
+                                        then(dd=>{
+                                            if(newOpt.error){
+                                                newOpt.error.apply(scope,dd);
+                                            }
+                                            reject(dd[0]);
+                                        }).
+                                        catch(ee=>reject(ee))
+                                    )
+                                }
+                                delete request["_complete"]
                             }
-                            delete request["_complete"]
-                        }
-                    };
+                        };
+                    })
+                    .catch(function(e){
+                        formatResult(scope,request.responseText, request,opt,false).then(dd=>reject(dd)).catch(ee=>reject(ee))
+                    })
+                    
                 } catch (err) {
-                    reject(formatResult(request.responseText, request,opt,false));
+                    formatResult(scope,err, request,opt,false).then(dd=>reject(dd)).catch(ee=>reject(ee));
                 }
             });
-            // if (opt.timeout) {
-            //     var timeoutRequest = new Promise(function(resolve, reject) {
-            //         setTimeout(function() {
-            //             if (!request._complete) {
-            //                 request.abort();
-            //                 reject(["timeout-" + opt.timeout, request]);
-            //             }
-            //             // setTimeout(function() {
-            //             //     request.abort();
-            //             // }, 0)
-            //             // reject(["timeout-" + opt.timeout, request]);
-            //         }, opt.timeout)
-            //     });
-            //     return Promise.race([currentRequest, timeoutRequest]);
-            // }
+
             return currentRequest;
         };
     };
 
-    console.log(VueGlobalInstanceName,instanceName)
     Vue[VueGlobalInstanceName]=Vue.prototype[instanceName]={
         send:function(config,scope) {
             // 逻辑...
             return new xmlHttpRequest(scope).send(config);
+        },
+        interceptors:{
+            setRequest:function(fn){
+                requestInterceptor=fn;
+            },
+            setResponse:function(fn){
+                responseInterceptor=fn;
+            }
         }
     }  
 
@@ -305,3 +378,20 @@ rexShengPlugin.install = function(Vue, options={}) {
 }
 
 export default rexShengPlugin;
+
+
+            // if (opt.timeout) {
+            //     var timeoutRequest = new Promise(function(resolve, reject) {
+            //         setTimeout(function() {
+            //             if (!request._complete) {
+            //                 request.abort();
+            //                 reject(["timeout-" + opt.timeout, request]);
+            //             }
+            //             // setTimeout(function() {
+            //             //     request.abort();
+            //             // }, 0)
+            //             // reject(["timeout-" + opt.timeout, request]);
+            //         }, opt.timeout)
+            //     });
+            //     return Promise.race([currentRequest, timeoutRequest]);
+            // }
