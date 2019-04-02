@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
     <h1>{{ msg }}</h1>
 
     <h2>Ajax请求测试</h2>
@@ -54,6 +53,7 @@
 
 <script>
 import Vue from "vue";
+import { setTimeout } from 'timers';
 export default {
   name: "app",
   data() {
@@ -65,7 +65,35 @@ export default {
       downloadFileName:"LongPathTool(jb51.net).rar"
     };
   },
-  mounted() {},
+  mounted() {
+    var pageInstance=this.$socket.listen({
+      url:"/websocket",
+      onmessage:function(e){
+        console.log("msg"+new Date(),e)
+      },
+      onopen:function(e){
+        console.log("open",e)
+      },
+      onerror:function(e){
+        console.log("onerror",e)
+      },
+      onclose:function(e){
+        console.log("onclose",e)
+      },
+      instanceId:'12'
+    },this)//.send({user:"神你敢信"});
+    console.warn("pageInstance",pageInstance)
+    this.$socket.send("测试"+new Date(),{
+      url:"/websocket"
+    }).then((a)=>{
+      a.close()
+    })
+
+    setTimeout(function(){
+      pageInstance.close();
+      console.log("closed")
+    },30000)
+  },
   methods: {
     getData() {
       this.$ajax

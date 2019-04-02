@@ -15,3 +15,5 @@ Vue.use(ajax,{
 //   return d;
 // })
 Vue.ajax.prefix="http://192.168.8.72:8700"
+Vue.socket.setReconnectTimeout(30)
+Vue.socket.setRootUrl("ws://47.104.154.110:8701")

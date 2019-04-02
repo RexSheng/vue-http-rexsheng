@@ -11,7 +11,7 @@ npm install vue-http-rexsheng --save-dev
 # config in entry file like 'src/main.js'
 import http from 'vue-http-rexsheng';
 
-Vue.use(http,{instanceName:"$ajax",mockInstanceName:"$mock",
+Vue.use(http,{instanceName:"$ajax",mockInstanceName:"$mock",wsInstanceName:"$socket",
   resultFormat:function(d){
     return d.data;
   },
@@ -20,6 +20,24 @@ Vue.use(http,{instanceName:"$ajax",mockInstanceName:"$mock",
   },errorFormat:function(d){
     return d.data;
   },defaultConfig:{}})
+#设置ajax全局请求过滤器，fn参数为当前data
+Vue.ajax.interceptors.setRequest(fn)
+#设置ajax全局响应过滤器,fn参数为全部响应对象
+{
+  data:data,//响应数据
+  status:req.status,//响应状态码
+  statusText:req.statusText,//状态
+  headers:headers,//响应头
+  config:config,//配置option
+  request:req//当前请求
+}
+Vue.ajax.interceptors.setResponse(fn)
+#设置ajax全局前缀路径
+Vue.ajax.setBaseUrl("http://localhost:8080")
+#全局配置发送socket未开启时数据延迟毫秒
+Vue.socket.setReconnectTimeout(30)
+#全局配置发送socket的url前缀路径
+Vue.socket.setRootUrl("ws://47.104.xx.xx:8701")
 ```
 # 用法
 ```javascript
@@ -71,6 +89,7 @@ this.$ajax.send(option)
 |------          |---------------          |:-----:|
 |type            |类型                     |`get` `post` `delete` `put`|
 |url             |请求地址                  | 必填 |
+|baseUrl             |请求地址的前缀                  | 设置为`false`时，不使用全局配置url：Vue.ajax.setBaseUrl(url)；设置为字符串时，优先级高于全局配置 |
 |async           |是否异步请求              | 默认`true` |
 |headers         |请求headers对象           | 例如`{"Content-type":"application/json;charset=UTF-8"}` |
 |timeout         |超时时间毫秒               | 毫秒数 |
@@ -88,6 +107,58 @@ this.$ajax.send(option)
 |onprogress |进度事件         |`function(d){}` |
 |onloadend |请求结束事件         |`function(d){}` |
 |cancel |取消请求函数，若要取消该请求时在函数内部调用cb()来执行取消         |`function(cb){if(someCondition){cb();}}` |
+
+#socket配置
+```javascript
+//调用listen方法返回值结构：
+//{
+//  instance：“socket实例”,
+//  send:function(data,opt){//发送数据函数，返回promise,then参数为当前对象},
+//  close:function(){//关闭当前socket实例}
+//}
+var pageInstance=this.$socket.listen({
+      url:"/websocket",
+      onmessage:function(e){
+        console.log("msg"+new Date(),e)
+      },
+      onopen:function(e){
+        console.log("open",e)
+      },
+      onerror:function(e){
+        console.log("onerror",e)
+      },
+      onclose:function(e){
+        console.log("onclose",e)
+      },
+      instanceId:'12'//设置全局id,不会重复创建
+    },this)
+//调用send方法，发送数据，返回promise
+//send可选参数
+//(message(消息String|Object),option(配置项),scope（作用域，一般为页面实例this）)
+//(message(消息String|Object),option(配置项))
+//(message(消息String|Object),url(路径String))
+//(message(消息String|Object))
+//(option(配置项))
+this.$socket.send("测试"+new Date(),{
+      url:"/websocket"
+    }).then((a)=>{
+      a.close()
+    })
+
+```
+## websocket option配置如下
+|选项            |      说明                |  备注 |
+|------          |---------------          |:-----:|
+|dataType            |数据类型                     |`json` `text` `""`|
+|url             |请求地址                  | String类型 |
+|data |请求发送的数据         |Object/String |
+|format |对参数data进行格式化输出         |默认Object会进行JSON序列化，`format(data,type)`参数data用户数据【对应配置中data】,type用户的数据类型【对应配置中的dataType】|
+|onopen             |连接打开事件                  |  |
+|onmessage             |消息接收事件                  |  |
+|onerror             |错误事件                  |  |
+|onclose             |关闭事件                  |  |
+|instanceId             |全局id                  | String类型，设置此参数在页面跳转回来时，不会重复创建相同instanceId的socket连接，除非用户已经关闭对应的WebSocket |
+|root             | 当前请求的url前缀   | 若不使用全局配置的url:Vue.socket.setRootUrl(url)  ,可配置当前请求使用的前缀url,优先级高于全局配置 |
 
 
 For detailed explanation on how things work, consult the [docs for vue-http-rexsheng](https://github.com/RexSheng/vue-http-rexsheng).

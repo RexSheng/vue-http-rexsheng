@@ -1,3 +1,5 @@
+import wsPlugin from './websocket'
+import {socketConfig} from './websocket'
 var rexShengPlugin = {}
 rexShengPlugin.config = {}
 
@@ -9,13 +11,15 @@ rexShengPlugin.install = function(Vue, options={}) {
     let defaultFormatCallback=function(d){return d.data;};
     let instanceName=options.instanceName || "$ajax";
     let mockInstanceName=options.mockInstanceName || "$mock";
+    let wsInstanceName=options.wsInstanceName || "$socket";
     let VueGlobalInstanceName=instanceName.replace(/\$/g,'');//全局替换
+    let WSGlobalInstanceName=wsInstanceName.replace(/\$/g,'');//全局替换
     let successFormatCallback=options.successFormat || options.resultFormat || defaultFormatCallback;//返回数据的格式化
     let errorFormatCallback=options.errorFormat || options.resultFormat || defaultFormatCallback;
     let userDefaultConfig=options.defaultConfig || {};
     let requestInterceptor=function(d){return d;};
     let responseInterceptor=function(res){return res;};
-
+    let baseUrl="";
     let xmlHttpRequest = function(sc) {
         this.instance = null;
         this.scope = sc || this;
@@ -118,7 +122,15 @@ rexShengPlugin.install = function(Vue, options={}) {
             var opt=Object.assign(this.defaultConfig,userDefaultConfig, config);
             var request = this.createInstance();
             opt.url = this.formatUrl(opt.url, opt.data);
-            request.open(opt.type, opt.url, opt.async);
+            if(opt.baseUrl!=undefined && opt.baseUrl===false){
+                request.open(opt.type, opt.url, opt.async);
+            }
+            else if(opt.baseUrl!=undefined && opt.baseUrl!==false){
+                request.open(opt.type, opt.baseUrl+(opt.url || ""), opt.async);
+            }
+            else{
+                request.open(opt.type, baseUrl+opt.url, opt.async);
+            }
             if (opt.dataType.toLowerCase() === 'json') {
                 request.setRequestHeader("Content-type", "application/json;charset=UTF-8");
             } else {}
@@ -335,6 +347,9 @@ rexShengPlugin.install = function(Vue, options={}) {
             setResponse:function(fn){
                 responseInterceptor=fn;
             }
+        },
+        setBaseUrl:function(url){
+            baseUrl=url;
         }
     }  
 
@@ -375,6 +390,56 @@ rexShengPlugin.install = function(Vue, options={}) {
         return resultFormat.call(this,arguments);
     }
 
+    Vue[WSGlobalInstanceName]= Vue.prototype[wsInstanceName]={
+        listen:function(option,sc){
+            return new wsPlugin(sc).listen(option);
+        },
+        send:function(){
+            if(!arguments.length || !arguments[0]) return null;
+            if(arguments.length==3){
+                if(typeof arguments[1]==="string"){
+                    return new wsPlugin(arguments[2]).send({url:arguments[1],data:arguments[0]});
+                }
+                else{
+                    var option=arguments[1]
+                    option.data=arguments[0]
+                    return new wsPlugin(arguments[2]).send(option);
+                }
+            }
+            else if(arguments.length==2){
+                if(typeof arguments[1]==="string"){
+                    var option={
+                        data:arguments[0],
+                        url:arguments[1]
+                    }
+                    return new wsPlugin(this).send(option);
+                }
+                else{
+                    var option=arguments[1]
+                    option.data=arguments[0]
+                    return new wsPlugin(this).send(option);
+                }
+            }
+            else if(arguments.length==1){
+                if(typeof arguments[0]==="string"){
+                    var option={
+                        data:arguments[0],
+                    }
+                    return new wsPlugin(this).send(option);
+                }
+                else{
+                    return new wsPlugin(this).send(arguments[0]);
+                }
+            }
+            
+        },
+        setRootUrl:function(url){
+            socketConfig.rootUrl=url;
+        },
+        setReconnectTimeout:function(milliseconds){
+            socketConfig.timeout=milliseconds;
+        }
+    };
 }
 
 export default rexShengPlugin;
