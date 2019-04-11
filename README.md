@@ -20,9 +20,9 @@ Vue.use(http,{instanceName:"$ajax",mockInstanceName:"$mock",wsInstanceName:"$soc
   },errorFormat:function(d){
     return d.data;
   },defaultConfig:{}})
-#设置ajax全局请求过滤器，fn参数为当前data
-Vue.ajax.interceptors.setRequest(fn)
-#设置ajax全局响应过滤器,fn参数为全部响应对象
+#设置ajax全局请求过滤器，option参数为当前请求option
+Vue.ajax.interceptors.setRequest(function(option,request){return option;})
+#设置ajax全局响应过滤器,option参数为全部响应对象
 {
   data:data,//响应数据
   status:req.status,//响应状态码
@@ -31,13 +31,27 @@ Vue.ajax.interceptors.setRequest(fn)
   config:config,//配置option
   request:req//当前请求
 }
-Vue.ajax.interceptors.setResponse(fn)
+Vue.ajax.interceptors.setResponse(function(option,request){return option;})
 #设置ajax全局前缀路径
-Vue.ajax.setBaseUrl("http://localhost:8080")
+Vue.ajax.config.baseUrl="http://localhost:8080"
+#设置ajax全局是否启用mockserver,默认`false`
+Vue.ajax.config.mockMode=false
+#成功的status码
+Vue.ajax.config.successStatus=function(status){return status==200;}
+#修改默认配置
+Vue.ajax.config.default={type:"get",headers:{"Content-type":"application/json;charset=UTF-8"}}
+#设置mock请求方法或者指向的文件路径
+Vue.ajax.addMock(`String` mockUrl,function(param){return xxx;})
+Vue.ajax.addMock(
+  {
+    "url1":function(param){return xxx;},
+    "url2":function(param){return xxx;}
+  }
+)
 #全局配置发送socket未开启时数据延迟毫秒
-Vue.socket.setReconnectTimeout(30)
+Vue.socket.config.reconnectTimeout=30
 #全局配置发送socket的url前缀路径
-Vue.socket.setRootUrl("ws://47.104.xx.xx:8701")
+Vue.socket.config.baseUrl="ws://47.104.xx.xx:8701"
 ```
 # 用法
 ```javascript
@@ -89,7 +103,7 @@ this.$ajax.send(option)
 |------          |---------------          |:-----:|
 |type            |类型                     |`get` `post` `delete` `put`|
 |url             |请求地址                  | 必填 |
-|baseUrl             |请求地址的前缀                  | 设置为`false`时，不使用全局配置url：Vue.ajax.setBaseUrl(url)；设置为字符串时，优先级高于全局配置 |
+|baseUrl             |请求地址的前缀                  | `boolean` `string`  设置为`false`时，不使用全局配置url：Vue.ajax.config.baseUrl；设置为字符串时，优先级高于全局配置 |
 |async           |是否异步请求              | 默认`true` |
 |headers         |请求headers对象           | 例如`{"Content-type":"application/json;charset=UTF-8"}` |
 |timeout         |超时时间毫秒               | 毫秒数 |
@@ -98,6 +112,7 @@ this.$ajax.send(option)
 |dataType |表明要发送的数据格式         |默认`"json"` `"xml"` `formData`(使用formdata表单发送数据，通常用于文件上传)|
 |responseType|返回的数据类型|默认`""` `"json"` `"blob"` `"text"` `"arraybuffer"` `"document"`
 |transform |自定义格式化请求前数据的函数         | 参数为当前配置的data数据<br/> 例如`function(data){return JSON.stringify(data);}` |
+|mock|mock模拟数据请求|`true(需调用Vue.ajax.addMock(url,function)来拦截本次请求)` `function(data){//模拟请求，参数data为option的data}` |
 |success|请求成功的回调|`function(data,req){}` |
 |error|请求失败的回调|`function(err,req){}` |
 |complete|请求完成的回调|`function(){}` |
@@ -158,7 +173,7 @@ this.$socket.send("测试"+new Date(),{
 |onerror             |错误事件                  |  |
 |onclose             |关闭事件                  |  |
 |instanceId             |全局id                  | String类型，设置此参数在页面跳转回来时，不会重复创建相同instanceId的socket连接，除非用户已经关闭对应的WebSocket |
-|root             | 当前请求的url前缀   | 若不使用全局配置的url:Vue.socket.setRootUrl(url)  ,可配置当前请求使用的前缀url,优先级高于全局配置 |
+|baseUrl             | 当前请求的url前缀   | 若不使用全局配置的url:Vue.socket.config.baseUrl  ,可配置当前请求使用的前缀url,优先级高于全局配置 |
 
 
 For detailed explanation on how things work, consult the [docs for vue-http-rexsheng](https://github.com/RexSheng/vue-http-rexsheng).

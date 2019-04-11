@@ -1,7 +1,7 @@
 
 
 let socketConfig={
-    rootUrl:"",
+    baseUrl:"",
     timeout:20,
     globalInstances:{
 
@@ -34,7 +34,7 @@ let socketjs=function(sc){
         option.onopen=option.onopen || function(){};
         option.onerror=option.onerror || function(e){};
         option.onclose=option.onclose || function(e){};
-        option.url=option.root!=undefined?(option.root+(option.url || "")):(socketConfig.rootUrl+(option.url || ""));
+        option.url=option.baseUrl!=undefined?(option.baseUrl+(option.url || "")):(socketConfig.baseUrl+(option.url || ""));
         option.dataType=option.dataType || "";
         return option;
     }

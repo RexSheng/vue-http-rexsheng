@@ -19,6 +19,15 @@
       <li>
         <button @click="postFetchData(true)">Post用户列表</button>
       </li>
+      <li>
+        <button @click="form()">form请求</button>
+      </li>
+      <li>
+        <button @click="mockGlobal()">全局mock</button>
+      </li>
+      <li>
+        <button @click="mockStaticFile()">mock静态文件json</button>
+      </li>
     </ul>
     <ul>
       <li>
@@ -53,7 +62,6 @@
 
 <script>
 import Vue from "vue";
-import { setTimeout } from 'timers';
 export default {
   name: "app",
   data() {
@@ -233,7 +241,51 @@ export default {
         .catch(d => {
           console.log("error download file", d);
         });
-    }
+    },
+    form:function(){
+      Vue.ajax
+        .send({
+          url: "http://localhost:83/disease/section",
+          type: "post",
+          dataType: "form",
+          data: { keyword: "管理",arr:["生",'12f'] },
+          // success:function(d){
+          //   console.log("success form", d, this.msg);
+          // },
+          // error:function(d,req){
+          //   console.log("error form", d,req);
+          // }
+        }).then(d => {
+          console.log("success file", d, this.msg);
+        }).catch(function(e){
+          console.log("error2 form", e);
+        })
+    },
+    mockGlobal:function(){
+      Vue.ajax
+        .send({
+          url: "/test/mock001",
+          data: { keyword: "管理",arr:["生",'12f'] },
+          success:function(d){
+            console.log("success mockGlobal", d, this.msg);
+          },
+          error:function(d,req){
+            console.log("error mockGlobal", d,req);
+          }
+        })
+    },
+    mockStaticFile:function(){
+      Vue.ajax
+        .send({
+          url: "../static/mock/test.json",
+          success:function(d){
+            console.log("success mockGlobal", d, this.msg);
+          },
+          error:function(d,req){
+            console.log("error mockGlobal", d,req);
+          }
+        })
+    },
   }
 };
 </script>
