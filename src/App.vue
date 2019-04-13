@@ -28,6 +28,9 @@
       <li>
         <button @click="mockStaticFile()">mock静态文件json</button>
       </li>
+      <li>
+        <button @click="mockStaticFileGlobal()">mock全局静态json</button>
+      </li>
     </ul>
     <ul>
       <li>
@@ -74,6 +77,7 @@ export default {
     };
   },
   mounted() {
+    this.mock()
     var pageInstance=this.$socket.listen({
       url:"/websocket",
       onmessage:function(e){
@@ -103,6 +107,75 @@ export default {
     },30000)
   },
   methods: {
+    mock(){
+      console.log("'number|2':2",this.$ajax.mock({"number|2": 23}))
+      console.log("'number|2.3':2",this.$ajax.mock({"number|2.3": 23}))
+      console.log("'number|2.0-1':2",this.$ajax.mock({"number|2.0-1": 23}))
+      console.log("'number|1-10.3':2",this.$ajax.mock({"number|1-10.3": 33}))
+      console.log("'number|1-10.3-5':2",this.$ajax.mock({"number|1-10.3-5": 33}))
+      console.log("'string|1-10':'★'",this.$ajax.mock({"string|1-10": "★"}))
+      console.log("'string|3':'★'",this.$ajax.mock({"string|3": "★"}))
+      console.log("'boolean|+1':true",this.$ajax.mock({"boolean|+1": true}))
+      console.log("'boolean|1':true",this.$ajax.mock({"boolean|1": true}))
+      console.log("'boolean|3':true",this.$ajax.mock({"boolean|3": true}))
+      console.log("'boolean|3-5':true",this.$ajax.mock({"boolean|3-5": true}))
+
+      console.log("'object|2':{true}",this.$ajax.mock({"object|2": {
+        "310000": "上海市",
+        "320000": "江苏省",
+        "330000": "浙江省",
+        "340000": "安徽省"
+      }}))
+      console.log("'object|0-2':{true}",this.$ajax.mock({"object|0-2": {
+        "310000": "上海市",
+        "320000": "江苏省",
+        "330000": "浙江省",
+        "340000": "安徽省"
+      }}))
+      console.log("'array|1':['Mock.js']",this.$ajax.mock({"array|1": ["Mock.js"]}))
+       console.log("'array|+1':['Mock.js','!']",this.$ajax.mock({"array|+1": ["Mock.js",'!']}))
+      console.log("'array|2':['Mock.js']",this.$ajax.mock({"array|2": ["Mock.js"]}))
+      console.log("'array|1-3':['Mock.js']",this.$ajax.mock({"array|1-3": ["Mock.js"]}))
+      console.log("'array|1-3':['Mock.js','!']",this.$ajax.mock({"array|1-3": ["Mock.js",'!']}))
+      var complex=this.$ajax.mock({
+        "array|1-10": [
+          {
+            "name|2-3": [
+              "Hello",
+              "Mock.js",
+              "!"
+            ]
+          }
+        ]
+      })
+      console.log("'array|object|1-10':[{}]",complex)
+      console.log("'array|object2':[{}]",this.$ajax.mock({
+        code:0,
+        message:"请求成功",
+        extra:function(){
+          return {
+            name:"xx",
+            "boolean|2":true,
+            "secondName":[1,2],
+            "books|+2":["a","b","c"],
+            "values|+1":[[1,2],[2,3],[3,4]],
+            "func|1":function(){
+              return "a";
+            }
+          };
+        },
+        "data|2": [
+          {
+            "name|+1": [
+              "Hello",
+              "Mock.js",
+              "!"
+            ],
+            "values|+1":[[1,2],[2,3],[3,4]]
+          }
+        ]
+      }))
+    },
     getData() {
       this.$ajax
         .send({
@@ -136,6 +209,7 @@ export default {
         .send({
           url: Vue.ajax.prefix+"/api/user/login",
           type: "post",
+          // data: { loginName: [1,2], loginPassword: "123" }
           data: { loginName: "shengxp", loginPassword: "123" }
         })
         .then(d => {
@@ -277,7 +351,8 @@ export default {
     mockStaticFile:function(){
       Vue.ajax
         .send({
-          url: "../static/mock/test.json",
+          url: "启用mock且mock配置为string时，本url无效",
+          mock:"../static/mock/test.json",
           success:function(d){
             console.log("success mockGlobal", d, this.msg);
           },
@@ -286,6 +361,18 @@ export default {
           }
         })
     },
+    mockStaticFileGlobal:function(){
+      Vue.ajax
+        .send({
+          url: "/test/mockfile",
+          success:function(d){
+            console.log("success mockGlobal", d, this.msg);
+          },
+          error:function(d,req){
+            console.log("error mockGlobal", d,req);
+          }
+        })
+    }
   }
 };
 </script>

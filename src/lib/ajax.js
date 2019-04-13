@@ -1,33 +1,40 @@
+import randomPlugin from './random'
 /**
-     * author:RexSheng
-     * date:2018/11/06
-     */
-    let defaultFormatCallback=function(d){return d.data;};
-    let AJAXCONF={
-        instanceName:"$ajax",
-        mockInstanceName:"$mock",
-        wsInstanceName:"$socket",
-        VueGlobalInstanceName:"$ajax".replace(/\$/g,''),
-        WSGlobalInstanceName:"$socket".replace(/\$/g,''),
-        successFormatCallback:defaultFormatCallback,
-        errorFormatCallback:defaultFormatCallback,
-        userDefaultConfig:{},
-        requestInterceptor:function(opt,req){return opt;},
-        responseInterceptor:function(res,req){return res;},
-        successStatus:function(status){return status===200;},
-        baseUrl:"",
-        mockCache:{},
-        mockMode:false
-    }
-    // let defaultFormatCallback=function(d){return d.data;};
-    // let successFormatCallback=options.successFormat || options.resultFormat || defaultFormatCallback;//返回数据的格式化
-    // let errorFormatCallback=options.errorFormat || options.resultFormat || defaultFormatCallback;
-    // let userDefaultConfig=options.defaultConfig || {};
-    // let requestInterceptor=function(d){return d;};
-    // let responseInterceptor=function(res){return res;};
-    // let baseUrl="";
-    // let mockCache={};
-    // let mockMode=false;
+ * author:RexSheng
+ * date:2018/11/06
+ */
+let defaultFormatCallback=function(d){return d.data;};
+let STRATEGY={
+    LOCAL_GLOBAL:0,//局部配置优先
+    GLOBAL_LOCAL:0,//局部配置优先
+
+}
+let AJAXCONF={
+    instanceName:"$ajax",
+    mockInstanceName:"$mock",
+    wsInstanceName:"$socket",
+    VueGlobalInstanceName:"$ajax".replace(/\$/g,''),
+    WSGlobalInstanceName:"$socket".replace(/\$/g,''),
+    successFormatCallback:defaultFormatCallback,
+    errorFormatCallback:defaultFormatCallback,
+    userDefaultConfig:{},
+    requestInterceptor:function(opt,req){return opt;},
+    responseInterceptor:function(res,req){return res;},
+    successStatus:function(status){return status===200;},
+    baseUrl:"",
+    mockCache:{},
+    mockMode:false,
+    timeout:null
+}
+// let defaultFormatCallback=function(d){return d.data;};
+// let successFormatCallback=options.successFormat || options.resultFormat || defaultFormatCallback;//返回数据的格式化
+// let errorFormatCallback=options.errorFormat || options.resultFormat || defaultFormatCallback;
+// let userDefaultConfig=options.defaultConfig || {};
+// let requestInterceptor=function(d){return d;};
+// let responseInterceptor=function(res){return res;};
+// let baseUrl="";
+// let mockCache={};
+// let mockMode=false;
 
 let ajax = {
     xmlHttpRequest:function(sc) {
@@ -57,7 +64,7 @@ let ajax = {
                     //启用mock
                     useMock=true;
                     this.mockInstance=AJAXCONF.mockCache[option.url];
-                    if(!this.mockInstance){
+                    if(this.mockInstance==undefined || this.mockInstance==null){
                         useMock=false;
                     }
                 }
@@ -73,10 +80,14 @@ let ajax = {
                 }
             }
             else{
-                //全局使用mock，但是未配置实现方法，直接请求option.url
-                if(useMock && !this.mockInstance){
+                //全局使用mock，但是未配置实现方法，设置useMock=false,会直接默认请求option.url
+                if(useMock && (this.mockInstance===undefined || this.mockInstance===null)){
                     useMock=false;
                 }
+            }
+            if(useMock && (typeof this.mockInstance==="string")){
+                useMock=false;
+                option.url=this.mockInstance;
             }
             return useMock;
         };
@@ -95,7 +106,7 @@ let ajax = {
                 keys.forEach(function(key) {
                     var rawKey = key.substr(1, key.length - 2);
                     var replace;
-                    if (!data || !data[rawKey]) {
+                    if (data===undefined || data===null || data[rawKey]===undefined || data[rawKey]===null) {
                         replace = '';
                     } else {
                         replace = data[rawKey];
@@ -144,7 +155,8 @@ let ajax = {
                         return;
                     }
                     new Promise(function(res,rej){
-                        res(instance.call(scope, option.data,res, rej))
+                        var dj=instance.call(scope, option.data,res, rej);
+                        res(new randomPlugin(dj));
                     }).then(function(dd){
                         if(option.success){
                             option.success.call(scope,dd);
@@ -198,10 +210,10 @@ let ajax = {
             if(this.isMock(opt)){
                 return this.mock(opt,scope);
             }
-            if(opt.baseUrl!=undefined && opt.baseUrl===false){
+            if(opt.baseUrl!==undefined && opt.baseUrl===false){
                 request.open(opt.type, opt.url, opt.async);
             }
-            else if(opt.baseUrl!=undefined && opt.baseUrl!==false){
+            else if(opt.baseUrl!==undefined && opt.baseUrl!==false){
                 request.open(opt.type, opt.baseUrl+(opt.url || ""), opt.async);
             }
             else{
@@ -223,8 +235,11 @@ let ajax = {
             if(opt.responseType!=null){
                 request.responseType=opt.responseType;
             }
-            if (opt.timeout) {
+            if (opt.timeout!==undefined && opt.timeout!==null) {
                 request.timeout = opt.timeout;
+            }
+            if(AJAXCONF.timeout!==null){
+                request.timeout = AJAXCONF.timeout;
             }
             if (opt.withCredentials) {
                 request.withCredentials = opt.withCredentials;
@@ -271,9 +286,7 @@ let ajax = {
                     opt.data = JSON.stringify(opt.data);
                 }
             }
-            if(process.env.NODE_ENV !== 'production'){
-                // console.log("opt",opt)
-            }
+            
             /**
              * request.readyState
              * 0	Uninitialized	初始化状态。XMLHttpRequest 对象已创建或已被 abort() 方法重置。

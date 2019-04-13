@@ -109,10 +109,10 @@ this.$ajax.send(option)
 |timeout         |超时时间毫秒               | 毫秒数 |
 |withCredentials |跨域响应设置cookie         |默认`false` |
 |data |请求发送的数据         |Object/Array |
-|dataType |表明要发送的数据格式         |默认`"json"` `"xml"` `formData`(使用formdata表单发送数据，通常用于文件上传)|
+|dataType |表明要发送的数据格式         |默认`"json"` `"xml"` `"form"` `"formData"`(使用formdata表单发送数据，通常用于文件上传)|
 |responseType|返回的数据类型|默认`""` `"json"` `"blob"` `"text"` `"arraybuffer"` `"document"`
 |transform |自定义格式化请求前数据的函数         | 参数为当前配置的data数据<br/> 例如`function(data){return JSON.stringify(data);}` |
-|mock|mock模拟数据请求|`true(需调用Vue.ajax.addMock(url,function)来拦截本次请求)` `function(data){//模拟请求，参数data为option的data}` |
+|mock|mock模拟数据请求|`true(需调用Vue.ajax.addMock(url,function)来拦截本次请求)` `function(data){//模拟请求，参数data为option的data}` `String请求的json文件地址` |
 |success|请求成功的回调|`function(data,req){}` |
 |error|请求失败的回调|`function(err,req){}` |
 |complete|请求完成的回调|`function(){}` |

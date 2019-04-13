@@ -2,6 +2,7 @@ import wsPlugin from './websocket'
 import {socketConfig} from './websocket'
 import ajaxPlugin from './ajax'
 import {AJAXCONF} from './ajax'
+import randomPlugin from './random'
 // import _vue_ from 'vue'
 var rexShengPlugin = {}
 rexShengPlugin.config = {}
@@ -40,8 +41,13 @@ var ajaxBody={
         },
         set successStatus(fn){
             AJAXCONF.successStatus=fn;
-            console.log(AJAXCONF.successStatus(300))
-        }
+        },
+        get timeout(){
+            return AJAXCONF.timeout;
+        },
+        set timeout(value){
+            AJAXCONF.timeout=value;
+        },
     },
     addMock:function(){
         if(arguments.length==2){
@@ -53,6 +59,9 @@ var ajaxBody={
             }
         }
         
+    },
+    mock:function(param){
+        return new randomPlugin(param);
     }
 }
 var wsBody={
