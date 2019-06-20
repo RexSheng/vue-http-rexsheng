@@ -42,10 +42,19 @@ Vue.ajax.config.successStatus=function(status){return status==200;}
 Vue.ajax.config.default={type:"get",headers:{"Content-type":"application/json;charset=UTF-8"}}
 #设置mock请求方法或者指向的文件路径
 Vue.ajax.addMock(`String` mockUrl,function(param){return xxx;})
+Vue.ajax.addMock(`String` mockUrl,"../static/file.json")
+#mock代理请求
+Vue.ajax.addMock(`String` mockUrl,{url:"/api/newurl",data:{},type:"get",success:function(d){},error:function(err){},complete:function(){}})
+#@get: @post: @delete: @put: 用于相同url但是不同请求类型的拦截
 Vue.ajax.addMock(
   {
-    "url1":function(param){return xxx;},
-    "url2":function(param){return xxx;}
+    "/url1":function(param){return {code:0};},
+    "/url2":"../static/file.json",
+    "/url3":{url:"/api/newurl",data:{},type:"get",success:function(d){},error:function(err){},complete:function(){}},
+    //{url:"/user/3",type:"get"}的请求会匹配到
+    "@get:/user/3":"../static/filedetail.json",
+    //{url:"/user/3",type:"delete"}的请求会匹配到
+    "@delete:/user/3":"../static/filedetail.json",
   }
 )
 #全局配置发送socket未开启时数据延迟毫秒
@@ -112,7 +121,7 @@ this.$ajax.send(option)
 |dataType |表明要发送的数据格式         |默认`"json"` `"xml"` `"form"` `"formData"`(使用formdata表单发送数据，通常用于文件上传)|
 |responseType|返回的数据类型|默认`""` `"json"` `"blob"` `"text"` `"arraybuffer"` `"document"`
 |transform |自定义格式化请求前数据的函数         | 参数为当前配置的data数据<br/> 例如`function(data){return JSON.stringify(data);}` |
-|mock|mock模拟数据请求|`true(需调用Vue.ajax.addMock(url,function)来拦截本次请求)` `function(data){//模拟请求，参数data为option的data}` `String请求的json文件地址` |
+|mock|mock模拟数据请求|`true(需调用Vue.ajax.addMock(url,function)来拦截本次请求)` `function(data){//模拟请求，参数data为option的data}` `String请求的json文件地址` `{url:'/newurl',type:'get',data:{},complete:function(){},success:function(d){},error:function(err){}}`|
 |success|请求成功的回调|`function(data,req){}` |
 |error|请求失败的回调|`function(err,req){}` |
 |complete|请求完成的回调|`function(){}` |

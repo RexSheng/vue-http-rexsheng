@@ -19,18 +19,21 @@ Vue.ajax.addMock({
     "/test/mock001":function(d){
         var a=Object.assign({},d,{
             "name|+1":["小明",'小花','小春'],
-            "value|+1":[100,89,72,74,98],
+            "value|+2":[100,89,72,74,98],
             "date":new Date(),
             "provider":function(){
                 return d.arr;
             }
         });
-        return a
+        return Vue.ajax.mock(a);
     }
 })
-Vue.ajax.addMock({"/test/mockfile":"../static/mock/test.json"})
-
-
+// Vue.ajax.addMock({"/test/mockfile":"../static/mock/test.json"})
+Vue.ajax.addMock({
+    "/test/mockfile":"../src/assets/data/01.json",
+    "@get:/test/aaa":()=>{return {"dd":1};},
+    "@post:/test/aaa":()=>{return {"dd":"post"};}
+});
 // Vue.ajax.config.successStatus=function(d){return d>300};
 Vue.ajax.config.default={type:"get",headers:{"Content-type":"application/json;charset=UTF-8"}}
 Vue.socket.config.reconnectTimeout=30

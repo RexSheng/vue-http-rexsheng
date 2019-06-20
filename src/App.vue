@@ -5,6 +5,9 @@
     <h2>Ajax请求测试</h2>
     <ul>
       <li>
+        <button @click="cTest">自定义测试</button>
+      </li>
+      <li>
         <button @click="getData">Get数据</button>
       </li>
       <li>
@@ -30,6 +33,9 @@
       </li>
       <li>
         <button @click="mockStaticFileGlobal()">mock全局静态json</button>
+      </li>
+      <li>
+        <button @click="mockProxy()">mock代理</button>
       </li>
     </ul>
     <ul>
@@ -176,11 +182,26 @@ export default {
         ]
       }))
     },
+    cTest(){
+      this.$ajax
+        .send({
+          url:"http://localhost:8762/test",
+          type: "post",
+          data:{"pageIndex":1},
+          headers:{"Authorization":"12"}
+        })
+        .then(d => {
+          console.log("success test", d, this.msg);
+        })
+        .catch(d => {
+          console.log("error test", d);
+        });
+    },
     getData() {
       this.$ajax
         .send({
           url:
-            "http://xconsole.rrslj.com/datacenter/userxw/getCenterData?dateFlag=2018-08-10",
+            "datacenter/userxw/getCenterData?dateFlag=2018-08-10",
           type: "get"
         })
         .then(d => {
@@ -365,6 +386,41 @@ export default {
       Vue.ajax
         .send({
           url: "/test/mockfile",
+          success:function(d){
+            console.log("success mockGlobal", d, this.msg);
+          },
+          error:function(d,req){
+            console.log("error mockGlobal", d,req);
+          }
+        })
+    },
+    mockProxy:function(){
+      Vue.ajax
+        .send({
+          url: "/test/mockfile",
+          mock:{
+            url:"/test/aaa",
+            success:function(d){
+              console.log("get proxy", d, this.msg);
+            },
+          },
+          success:function(d){
+            console.log("success mockGlobal", d, this.msg);
+          },
+          error:function(d,req){
+            console.log("error mockGlobal", d,req);
+          }
+        })
+        Vue.ajax
+        .send({
+          url: "/test/mockfile",
+          type:"post",
+          mock:{
+            url:"/test/aaa",
+            success:function(d){
+              console.log("post proxy", d, this.msg);
+            },
+          },
           success:function(d){
             console.log("success mockGlobal", d, this.msg);
           },

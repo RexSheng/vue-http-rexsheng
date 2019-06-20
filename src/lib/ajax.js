@@ -55,17 +55,21 @@ let ajax = {
             data: null,
             dataType: "json"
         };
+        this.isNull=function(p){
+            return p===undefined || p===null;
+        };
         this.isMock=function(option){
             var useMock=AJAXCONF.mockMode;
-            // console.log("mockCache",mockCache)
             this.mockInstance=AJAXCONF.mockCache[option.url];
             if(option.mock!==undefined && option.mock!==null){
                 if(option.mock===true){
                     //启用mock
                     useMock=true;
-                    this.mockInstance=AJAXCONF.mockCache[option.url];
-                    if(this.mockInstance==undefined || this.mockInstance==null){
-                        useMock=false;
+                    if(this.isNull(this.mockInstance)){
+                        this.mockInstance=AJAXCONF.mockCache["@"+option.type.toLowerCase()+":"+option.url];
+                        if(this.isNull(this.mockInstance)){
+                            useMock=false;
+                        }
                     }
                 }
                 if(Object.prototype.toString.call(option.mock) === '[object Function]'){
@@ -77,17 +81,46 @@ let ajax = {
                     //指向文件地址，不启用mock
                     useMock=false;
                     option.url=option.mock;
+                    option.type="GET";
+                }
+                if(Object.prototype.toString.call(option.mock) === '[object Object]'){
+                    //启用mock
+                    useMock=false;
+                    this.mockInstance=option.mock;
                 }
             }
             else{
                 //全局使用mock，但是未配置实现方法，设置useMock=false,会直接默认请求option.url
-                if(useMock && (this.mockInstance===undefined || this.mockInstance===null)){
-                    useMock=false;
+                if(useMock){
+                    if(this.isNull(this.mockInstance)){
+                        this.mockInstance=AJAXCONF.mockCache["@"+option.type.toLowerCase()+":"+option.url];
+                        if(this.isNull(this.mockInstance)){
+                            useMock=false;
+                        }
+                    }
                 }
             }
-            if(useMock && (typeof this.mockInstance==="string")){
+            if(useMock && (Object.prototype.toString.call(this.mockInstance) === '[object String]')){
                 useMock=false;
                 option.url=this.mockInstance;
+                option.type="GET";
+            }
+            if(Object.prototype.toString.call(this.mockInstance) === '[object Object]'){
+                option=Object.assign(option,this.mockInstance);
+                option.mock=undefined;
+                return this.isMock(option);
+            }
+            if(option.url.substr(0,5)==="@get:"){
+                option.url=option.url.substr(5);
+            }
+            else if(option.url.substr(0,6)==="@post:"){
+                option.url=option.url.substr(6);
+            }
+            else if(option.url.substr(0,8)==="@delete:"){
+                option.url=option.url.substr(8);
+            }
+            else if(option.url.substr(0,5)==="@put:"){
+                option.url=option.url.substr(5);
             }
             return useMock;
         };
@@ -155,8 +188,9 @@ let ajax = {
                         return;
                     }
                     new Promise(function(res,rej){
-                        var dj=instance.call(scope, option.data,res, rej);
-                        res(new randomPlugin(dj));
+                        var dd=instance.call(scope, option.data,res, rej);
+                        // var dd=new randomPlugin().handle(dj);
+                        res(dd);
                     }).then(function(dd){
                         if(option.success){
                             option.success.call(scope,dd);
@@ -205,11 +239,11 @@ let ajax = {
             var scope=this.scope;
             var formatResult=this.formatResult;
             var opt=Object.assign(this.defaultConfig,AJAXCONF.userDefaultConfig, config);
-            var request = this.createInstance();
-            opt.url = this.formatUrl(opt.url, opt.data);
             if(this.isMock(opt)){
                 return this.mock(opt,scope);
             }
+            var request = this.createInstance();
+            opt.url = this.formatUrl(opt.url, opt.data);
             if(opt.baseUrl!==undefined && opt.baseUrl===false){
                 request.open(opt.type, opt.url, opt.async);
             }
@@ -250,7 +284,7 @@ let ajax = {
             }
             else{
                 if (opt.dataType.toLowerCase() === 'formdata') {
-                    if (opt.data != null) {
+                    if (opt.data != null && Object.prototype.toString.call(opt.data) !=='[object FormData]') {
                         var formData = new FormData();
                         Object.keys(opt.data).forEach(key => {
                             if (opt.data[key].constructor === Array || opt.data[key].constructor === FileList) {

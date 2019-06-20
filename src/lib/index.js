@@ -61,7 +61,7 @@ var ajaxBody={
         
     },
     mock:function(param){
-        return new randomPlugin(param);
+        return new randomPlugin().handle(param);
     }
 }
 var wsBody={

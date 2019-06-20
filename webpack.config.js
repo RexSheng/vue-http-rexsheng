@@ -70,7 +70,41 @@ module.exports = {
   devServer: {
     historyApiFallback: true,
     noInfo: true,
-    overlay: true
+    overlay: true,
+    // host: '0.0.0.0',
+    // port: 8080,
+    progress:true,//Output running progress to console.
+    clientLogLevel:"info",
+    compress:true,
+    publicPath:"/dist/",//请求根.js文件的路径
+    //配置静态资源，默认是public下的static
+    // contentBase: [path.join(__dirname, 'public'), path.join(__dirname, 'src'), path.join(__dirname, 'dist')],
+    quiet: false,//只显示初始化信息，不显示error等
+    // before: function(app, server) {//在其他请求之前执行的中间件
+    //   app.get('/some/path', function(req, res) {
+    //     res.json({ custom: 'response' });
+    //   });
+    // }
+    proxy:{
+      // '/api': 'http://localhost:newPort'
+      //http://localhost:8080/datacenter/user==>> http://xconsole.rrslj.com/datacenter/user
+      '/datacenter': {
+        target: 'http://xconsole.rrslj.com',
+        pathRewrite: {'^/api' : ''},//请求url不携带有/api
+        changeOrigin:true,
+        secure:false
+        // bypass: function(req, res, proxyOptions) {
+        //   if (req.headers.accept.indexOf('html') !== -1) {
+        //     console.log('Skipping proxy for browser request.');
+        //     return '/index.html';
+        //   }
+        // }
+      },
+      // proxy: [{
+      //   context: ['/auth', '/api'],//多个路径代理
+      //   target: 'http://localhost:3000',
+      // }]
+    }
   },
   performance: {
     hints: false

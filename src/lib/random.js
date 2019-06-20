@@ -35,110 +35,6 @@ let getRandomByCount=function(count,minNum,maxNum){
 }
 let rd={
     classHandle:function(param){
-        this.functionHandle=function(value){
-            if(getType(value)==="number"){
-                //造一个范围内的随机数
-                var digit=createRandomNumber(min,max);
-                
-                if(min2!==Number.MIN_VALUE){
-                    var postfix=-1;
-                    if(min2===max2){
-                        postfix=createRandomNumber(Math.pow(10,min2-1),Math.pow(10,max2)-1);
-                    }
-                    else{
-                        postfix=createRandomNumber(Math.pow(10,min2)-1,Math.pow(10,max2)-1);
-                    }
-                    var postFixStr=postfix+"";
-                    while(postFixStr.length>0 && postFixStr.substr(-1)==="0"){
-                        postFixStr=postFixStr.substr(0,postFixStr.length-2);
-                    }
-                    digit=parseFloat(digit+"."+postFixStr);
-                }
-                resultValue=digit; 
-            }
-            else if(getType(value)==="string"){
-                var digit=createRandomNumber(min,max);
-                resultValue="";
-                var newValue=this.handle(value);
-                for(var i=0;i<digit;i++){
-                    resultValue+=newValue;
-                }
-            }
-            else if(getType(value)==="boolean"){
-                //带+号的只返回一个随机值
-                if((min+"").substr(0,1)==="+"){
-                    var digit=createRandomNumber(0,1);
-                    if(digit===0){
-                        resultValue=value;
-                    }
-                    else{
-                        resultValue=!value;
-                    }
-                }
-                else{
-                    //不带加号，返回数组，minlength=0
-                    resultValue=[];
-                    var count=createRandomNumber(min,max);
-                    for(var i=0;i<count;i++){
-                        var digit=createRandomNumber(0,1);
-                        if(digit===0){
-                            resultValue.push(true);
-                        }
-                        else{
-                            resultValue.push(false);
-                        }
-                    }
-                }
-                
-            }
-            else if(getType(value)==="object"){
-                resultValue={}
-                var keys=Object.keys(value);
-                var self=this;
-                max=max>keys.length?keys.length:max;
-                min=min<0?0:min;
-                //需要取几个数
-                var count=createRandomNumber(min,max);
-                if(count>0){
-                    var arr=getRandomByCount(count,0,keys.length-1);
-                    arr.forEach(digit=>{
-                        resultValue[keys[digit]]=self.handle(value[keys[digit]]);
-                    })
-                }
-            }
-            else if(getType(value)==="array"){
-                resultValue=[]
-                var tempArr=[];
-                if((min+"").substr(0,1)==="+"){
-                    //+1 只随机取一个，不作为数组
-                    if((min+"").substr(1)==="1"){
-                        var count=createRandomNumber(0,value.length-1);
-                        resultValue=this.handle(value[count]);
-                    }
-                    else{
-                        var count=getRandomByCount(parseInt((min+"").substr(1)),0,value.length-1);
-                        resultValue=[];
-                        var self=this;
-                        count.forEach(i=>{
-                            resultValue.push(self.handle(value[i]));
-                        })
-                    }
-                }
-                else{
-                    //获取数组数量
-                    var count=createRandomNumber(min,max);
-                    if(count>0){
-                        for(var i=0;i<count;i++){
-                            tempArr=tempArr.concat(value);
-                        }
-                    }
-                    var self=this
-                    tempArr.forEach(item=>{
-                        resultValue.push(self.handle(item));
-                    })
-                }
-            }
-        }
         this.propertyHandle=function(property,value){
             var obj={};
             if(property.indexOf("|")<0){
@@ -303,7 +199,8 @@ let rd={
             
             return obj
         }
-        this.handle=function(param){
+        this.handle=function(param)
+        {
             if(getType(param)==="string"){
                 // @datetime("yyyy")
                 // @now("")当前时间
@@ -313,7 +210,6 @@ let rd={
                 // @cword(pool,min,max)
                 // @city
                 // @privince
-    
                 return param;
             }
             else if(getType(param)==="object"){
@@ -324,14 +220,10 @@ let rd={
                 return result;
             }
             else{
-                // throw "未识别的参数类型"
                 return param;
             }
         }
-        return this.handle(param);
-        
-    },
-    
+    }
 }
 
-export default rd.classHandle;
+export default rd.classHandle
