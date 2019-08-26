@@ -34,10 +34,16 @@ var ajaxBody={
             AJAXCONF.mockMode=value;
         },
         get default(){
-            return AJAXCONF.userDefaultConfig;
+            return AJAXCONF.userDefaultConfig();
         },
         set default(value){
-            AJAXCONF.userDefaultConfig=value;
+            if(Object.prototype.toString.call(value) === '[object Function]'){
+                AJAXCONF.userDefaultConfig=value;
+            }
+            else{
+                AJAXCONF.userDefaultConfig=function(){return value};
+            }
+            
         },
         set successStatus(fn){
             AJAXCONF.successStatus=fn;
@@ -134,7 +140,7 @@ rexShengPlugin.install = function(Vue, options={}) {
     AJAXCONF.WSGlobalInstanceName=AJAXCONF.wsInstanceName.replace(/\$/g,'');//全局替换
     AJAXCONF.successFormatCallback=options.successFormat || options.resultFormat || AJAXCONF.successFormatCallback;//返回数据的格式化
     AJAXCONF.errorFormatCallback=options.errorFormat || options.resultFormat || AJAXCONF.errorFormatCallback;
-    AJAXCONF.userDefaultConfig=Object.assign({},options.defaultConfig || {},AJAXCONF.userDefaultConfig);
+    AJAXCONF.userDefaultConfig=function(){return Object.assign({},options.defaultConfig || {},AJAXCONF.userDefaultConfig());}
     
     Vue[AJAXCONF.VueGlobalInstanceName]=Vue.prototype[AJAXCONF.instanceName]=ajaxBody
     

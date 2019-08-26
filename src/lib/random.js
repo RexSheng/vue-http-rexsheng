@@ -27,6 +27,7 @@ let getRandomByCount=function(count,minNum,maxNum){
     var arr=[];
     while(arr.length<count){
         var digit=createRandomNumber(minNum,maxNum);
+        console.log(digit)
         if(arr.indexOf(digit)<0){
             arr.push(digit);
         }
@@ -168,7 +169,14 @@ let rd={
                             resultValue=this.handle(value[count]);
                         }
                         else{
-                            var count=getRandomByCount(parseInt((min+"").substr(1)),0,value.length-1);
+                            console.warn(parseInt((min+"").substr(1)),value.length)
+                            var count=0;
+                            if(parseInt((min+"").substr(1))>value.length){
+                                count=getRandomByCount(value.length,0,value.length-1);
+                            }
+                            else{
+                                count=getRandomByCount(parseInt((min+"").substr(1)),0,value.length-1);
+                            }
                             resultValue=[];
                             var self=this;
                             count.forEach(i=>{

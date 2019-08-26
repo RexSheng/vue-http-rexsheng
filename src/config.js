@@ -32,9 +32,10 @@ Vue.ajax.addMock({
 Vue.ajax.addMock({
     "/test/mockfile":"../src/assets/data/01.json",
     "@get:/test/aaa":()=>{return {"dd":1};},
-    "@post:/test/aaa":()=>{return {"dd":"post"};}
+    "@post:/test/aaa":()=>{return {"dd":"post"};},
+    "@post:/test/mock001":()=>{return {"001":"post"};}
 });
 // Vue.ajax.config.successStatus=function(d){return d>300};
-Vue.ajax.config.default={type:"get",headers:{"Content-type":"application/json;charset=UTF-8"}}
+Vue.ajax.config.default=()=>{return{type:"get",headers:{"Content-type":"application/json;charset=UTF-8","Authorization":new Date().getTime()}}}
 Vue.socket.config.reconnectTimeout=30
 Vue.socket.config.baseUrl="ws://47.104.154.110:8701"

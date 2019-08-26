@@ -139,7 +139,7 @@ export default {
         "340000": "安徽省"
       }}))
       console.log("'array|1':['Mock.js']",this.$ajax.mock({"array|1": ["Mock.js"]}))
-       console.log("'array|+1':['Mock.js','!']",this.$ajax.mock({"array|+1": ["Mock.js",'!']}))
+      console.log("'array|+1':['Mock.js','!']",this.$ajax.mock({"array|+3": ["Mock.js",'!']}))
       console.log("'array|2':['Mock.js']",this.$ajax.mock({"array|2": ["Mock.js"]}))
       console.log("'array|1-3':['Mock.js']",this.$ajax.mock({"array|1-3": ["Mock.js"]}))
       console.log("'array|1-3':['Mock.js','!']",this.$ajax.mock({"array|1-3": ["Mock.js",'!']}))
@@ -201,8 +201,15 @@ export default {
       this.$ajax
         .send({
           url:
-            "datacenter/userxw/getCenterData?dateFlag=2018-08-10",
-          type: "get"
+            "datacenter/userxw/getCenterData?dateFlag={dateFlag}&size={size}",
+          // type: "get" ,
+          data:{dateFlag:"2018-08-11",size:null},
+           cancel:function(cb){
+              console.log(new Date())
+              setTimeout(()=>{
+                cb()
+              },4000)
+            }
         })
         .then(d => {
           console.log("success1", d, this.msg);
@@ -340,10 +347,11 @@ export default {
     form:function(){
       Vue.ajax
         .send({
-          url: "http://localhost:83/disease/section",
-          type: "post",
-          dataType: "form",
-          data: { keyword: "管理",arr:["生",'12f'] },
+          url: "http://localhost:9030/web/auth/users",
+          type: "get",
+          // dataType: "form",
+          // data: { keyword: "管理",arr:["生",'12f'] },
+          data:{userName:'',company:'',index:1,size:10},
           // success:function(d){
           //   console.log("success form", d, this.msg);
           // },
@@ -361,6 +369,7 @@ export default {
         .send({
           url: "/test/mock001",
           data: { keyword: "管理",arr:["生",'12f'] },
+          type:"post",
           success:function(d){
             console.log("success mockGlobal", d, this.msg);
           },

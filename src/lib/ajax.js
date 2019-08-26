@@ -5,9 +5,8 @@ import randomPlugin from './random'
  */
 let defaultFormatCallback=function(d){return d.data;};
 let STRATEGY={
-    LOCAL_GLOBAL:0,//局部配置优先
-    GLOBAL_LOCAL:0,//局部配置优先
-
+    LOCAL_GLOBAL:0,//局部配置优先，全局次之
+    GLOBAL_LOCAL:1,//全局配置优先，局部次之
 }
 let AJAXCONF={
     instanceName:"$ajax",
@@ -17,7 +16,7 @@ let AJAXCONF={
     WSGlobalInstanceName:"$socket".replace(/\$/g,''),
     successFormatCallback:defaultFormatCallback,
     errorFormatCallback:defaultFormatCallback,
-    userDefaultConfig:{},
+    userDefaultConfig:function(){return {}},
     requestInterceptor:function(opt,req){return opt;},
     responseInterceptor:function(res,req){return res;},
     successStatus:function(status){return status===200;},
@@ -60,13 +59,13 @@ let ajax = {
         };
         this.isMock=function(option){
             var useMock=AJAXCONF.mockMode;
-            this.mockInstance=AJAXCONF.mockCache[option.url];
+            this.mockInstance=AJAXCONF.mockCache["@"+option.type.toLowerCase()+":"+option.url];            
             if(option.mock!==undefined && option.mock!==null){
                 if(option.mock===true){
                     //启用mock
                     useMock=true;
                     if(this.isNull(this.mockInstance)){
-                        this.mockInstance=AJAXCONF.mockCache["@"+option.type.toLowerCase()+":"+option.url];
+                        this.mockInstance=AJAXCONF.mockCache[option.url];
                         if(this.isNull(this.mockInstance)){
                             useMock=false;
                         }
@@ -93,7 +92,7 @@ let ajax = {
                 //全局使用mock，但是未配置实现方法，设置useMock=false,会直接默认请求option.url
                 if(useMock){
                     if(this.isNull(this.mockInstance)){
-                        this.mockInstance=AJAXCONF.mockCache["@"+option.type.toLowerCase()+":"+option.url];
+                        this.mockInstance=AJAXCONF.mockCache[option.url];
                         if(this.isNull(this.mockInstance)){
                             useMock=false;
                         }
@@ -238,7 +237,7 @@ let ajax = {
         this.send = function(config) {
             var scope=this.scope;
             var formatResult=this.formatResult;
-            var opt=Object.assign(this.defaultConfig,AJAXCONF.userDefaultConfig, config);
+            var opt=Object.assign(this.defaultConfig,AJAXCONF.userDefaultConfig(), config);
             if(this.isMock(opt)){
                 return this.mock(opt,scope);
             }
@@ -253,17 +252,36 @@ let ajax = {
             else{
                 request.open(opt.type, AJAXCONF.baseUrl+opt.url, opt.async);
             }
-            if (opt.dataType.toLowerCase() === 'json') {
-                request.setRequestHeader("Content-type", "application/json;charset=UTF-8");
-            } 
-            else if (opt.dataType.toLowerCase() === 'form') {
-                request.setRequestHeader("Content-type", "application/x-www-form-urlencoded;charset=UTF-8");
-            }else {}
+            
             //加入header
             if (opt.headers) {
                 Object.keys(opt.headers).forEach(item => {
-                    request.setRequestHeader(item, opt.headers[item]);
+                    if(item.toLowerCase()==="content-type"){
+                        //用户无设置自定义header
+                        if (opt.dataType.toLowerCase() === 'json') {
+                            request.setRequestHeader("Content-type", "application/json;charset=UTF-8");
+                        } 
+                        else if (opt.dataType.toLowerCase() === 'form') {
+                            request.setRequestHeader("Content-type", "application/x-www-form-urlencoded;charset=UTF-8");
+                        }
+                        else{
+                            request.setRequestHeader(item, opt.headers[item]);
+                        }
+                    }
+                    else{
+                        request.setRequestHeader(item, opt.headers[item]);
+                    }
+                    
                 });
+            }
+            else{
+                //用户无设置自定义header
+                if (opt.dataType.toLowerCase() === 'json') {
+                    request.setRequestHeader("Content-type", "application/json;charset=UTF-8");
+                } 
+                else if (opt.dataType.toLowerCase() === 'form') {
+                    request.setRequestHeader("Content-type", "application/x-www-form-urlencoded;charset=UTF-8");
+                }else {}
             }
             
             if(opt.responseType!=null){
@@ -316,7 +334,7 @@ let ajax = {
                         }
                     }
                 }
-                if (opt.type.toLowerCase() === "post" && opt.dataType.toLowerCase() === 'json' && opt.data) {
+                if (opt.dataType.toLowerCase() === 'json' && opt.data) {
                     opt.data = JSON.stringify(opt.data);
                 }
             }
@@ -359,17 +377,32 @@ let ajax = {
                             }
                         }
                         request.send(newOpt.data);
+                        if (newOpt.cancel) {
+                            newOpt.cancel.call(scope, function() {
+                                var oldState=request.readyState;
+                                request.abort();
+                                if(oldState<4){
+                                    if(newOpt.complete){
+                                        newOpt.complete.call(scope);
+                                    }
+                                    if(newOpt.error){
+                                        newOpt.error.apply(scope,[request]);
+                                    }
+                                    reject(request);
+                                }
+                            });
+                        }
+                        // var abortIntervalHandler=null;
+                        // if (newOpt.cancel) {
+                        //     abortIntervalHandler = setInterval(function() {
+                        //         newOpt.cancel.call(scope, function() {
+                        //             request.abort();
+                        //             clearInterval(abortIntervalHandler);
+                        //             abortIntervalHandler = null;
+                        //         });
+                        //     }, 0);
+                        // }
                         request.onreadystatechange = function() {
-                            
-                            if (newOpt.cancel) {
-                                abortIntervalHandler = setInterval(function() {
-                                    newOpt.cancel.call(scope, function() {
-                                        request.abort();
-                                        clearInterval(abortIntervalHandler);
-                                        abortIntervalHandler = null;
-                                    });
-                                }, 0);
-                            }
                             if (request.readyState === 4) { // 4代表执行完成
                                 request._complete = true;
                                 if(newOpt.complete){
@@ -462,7 +495,17 @@ let ajax = {
                         };
                     })
                     .catch(function(e){
-                        formatResult(scope,request.responseText, request,opt,false).then(dd=>reject(dd[0])).catch(ee=>reject(ee[0]))
+                        formatResult(scope,request.responseText, request,opt,false).then(dd=>{
+                            if(opt.success){
+                                opt.success.apply(scope,dd);
+                            }
+                            reject(dd[0]);
+                        }).catch(ee=>{
+                            if(opt.error){
+                                opt.error.apply(scope,dd);
+                            }
+                            reject(ee[0])
+                        })
                     })
                     
                 } catch (err) {

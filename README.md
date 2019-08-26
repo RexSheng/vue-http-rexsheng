@@ -40,6 +40,7 @@ Vue.ajax.config.mockMode=false
 Vue.ajax.config.successStatus=function(status){return status==200;}
 #修改默认配置
 Vue.ajax.config.default={type:"get",headers:{"Content-type":"application/json;charset=UTF-8"}}
+Vue.ajax.config.default=()=>{return {type:"get",headers:{"Content-type":"application/json;charset=UTF-8","Lang":localStorage.getItem("language")}}}
 #设置mock请求方法或者指向的文件路径
 Vue.ajax.addMock(`String` mockUrl,function(param){return xxx;})
 Vue.ajax.addMock(`String` mockUrl,"../static/file.json")
