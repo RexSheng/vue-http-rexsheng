@@ -5,7 +5,10 @@
 ## Build Setup
 
 ``` bash
-# install plugin
+# 页面直接引用（放在vue.js引用之后）
+<script src="https://rexsheng.github.io/vue-http-rexsheng/latest/http.js"></script>
+
+# npm安装
 npm install vue-http-rexsheng --save-dev
 
 # config in entry file like 'src/main.js'
@@ -120,7 +123,7 @@ this.$ajax.send(option)
 |type            |类型                     |`get` `post` `delete` `put`|
 |url             |请求地址                  | 必填 |
 |baseUrl             |请求地址的前缀                  | `boolean` `string`  设置为`false`时，不使用全局配置url：Vue.ajax.config.baseUrl；设置为字符串时，优先级高于全局配置 |
-|async           |是否异步请求              | 默认`true` |
+|~~async~~           |~~是否异步请求~~              | ~~默认`true`~~ |
 |headers         |请求headers对象           | 例如`{"Content-type":"application/json;charset=UTF-8"}` |
 |timeout         |超时时间毫秒               | 毫秒数 |
 |withCredentials |跨域响应设置cookie         |默认`false` |
