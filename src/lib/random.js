@@ -10,7 +10,8 @@ let getType= function(obj) {
         '[object RegExp]': 'regExp',
         '[object Undefined]': 'undefined',
         '[object Null]': 'null',
-        '[object Object]': 'object'
+        '[object Object]': 'object',
+        '[object File]': 'file'
     };
     return map[toString.call(obj)];
 }

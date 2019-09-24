@@ -20,6 +20,12 @@ let AJAXCONF={
     requestInterceptor:function(opt,req){return opt;},
     responseInterceptor:function(res,req){return res;},
     successStatus:function(status){return status===200;},
+    missingMockCallback(option){
+        //false： 缺失mock配置时，不使用mock，使用真实url请求
+        return false; 
+        //true: 缺失mock配置时，会error终止
+        //return true;
+    },
     baseUrl:"",
     mockCache:{},
     mockMode:false,
@@ -94,7 +100,7 @@ let ajax = {
                     if(this.isNull(this.mockInstance)){
                         this.mockInstance=AJAXCONF.mockCache[option.url];
                         if(this.isNull(this.mockInstance)){
-                            useMock=false;
+                            useMock=AJAXCONF.missingMockCallback(option);
                         }
                     }
                 }
@@ -130,21 +136,82 @@ let ajax = {
          * @param {Object} data,如{userId:3}
          * @return {String} 如 /user/3
          */
-        this.formatUrl = function(url, data) {
+        this.formatUrl = function(url, data,opt) {
             if (!url) return null;
             var keys = url.match(/\{\w+\}/g);
             keys = (keys === null) ? [] : keys;
             if (keys) {
-                keys.forEach(function(key) {
-                    var rawKey = key.substr(1, key.length - 2);
-                    var replace;
-                    if (data===undefined || data===null || data[rawKey]===undefined || data[rawKey]===null) {
-                        replace = '';
-                    } else {
-                        replace = data[rawKey];
+                if(keys.length>0){
+                    keys.forEach(function(key) {
+                        var rawKey = key.substr(1, key.length - 2);
+                        var replace;
+                        if (data===undefined || data===null || data[rawKey]===undefined || data[rawKey]===null) {
+                            replace = '';
+                        } else {
+                            replace = data[rawKey];
+                        }
+                        url = url.replace(new RegExp(key, 'g'), replace);
+                    });
+                }
+                else{
+                    //url中不包含{}
+                    if(opt.type.toLowerCase()==="get" || opt.type.toLowerCase()==="delete"){
+                        if (data===undefined || data===null) {
+                            return url;
+                        } else {
+                            var newData=null;
+                            if(Object.prototype.toString.call(data) ==='[object Array]'){
+                                newData={};
+                                for(var i=0;i<data.length;i++){
+                                    newData[i]=data[i];
+                                }
+                            }
+                            else if(Object.prototype.toString.call(data) ==='[object Object]'){
+                                newData=data;
+                            }
+                            if(newData!==null){
+                                var firstUrl=url.indexOf("?")>-1?url.substr(0,url.indexOf("?")):url;
+                                //有旧数据则合并
+                                if(url.indexOf("?")>-1){
+                                    var lastUrl=url.substr(url.indexOf("?")+1);
+                                    var strs = lastUrl.trim()==""?[]:lastUrl.split("&");
+                                    var oldData={}
+                                    url=firstUrl+"?"
+                                    var oldKeys=[];
+                                    for(var i = 0; i < strs.length; i ++) {
+                                        var key=strs[i].split("=")[0];
+                                        oldKeys.push(key)
+                                        if(Object.keys(newData).indexOf(key)<0){
+                                            //将新数据合并到旧数据上
+                                            url+=key+"="+(strs[i].split("=").length>1?strs[i].split("=")[1]:"")+"&";
+                                        }
+                                        else{
+                                            //将新数据合并到旧数据上
+                                            url+=key+"="+encodeURIComponent(newData[key]==null?"":newData[key])+"&";
+                                        }
+                                    }
+                                    Object.keys(newData).forEach(key=>{
+                                        if(oldKeys.indexOf(key)<0){
+                                            url+=key+"="+encodeURIComponent(newData[key]==null?"":newData[key])+"&";
+                                        }
+                                    });
+                                }
+                                else{
+                                    url=firstUrl+"?"
+                                    Object.keys(newData).forEach(key=>{
+                                        url+=key+"="+encodeURIComponent(newData[key]==null?"":newData[key])+"&";
+                                    });
+                                }
+                                
+                                if(url.endsWith("&")){
+                                    url=url.substr(0,url.length-1);
+                                }
+                            }
+                        }
+                       
                     }
-                    url = url.replace(new RegExp(key, 'g'), replace);
-                });
+                }
+                
             }
             return url;
         };
@@ -183,7 +250,10 @@ let ajax = {
             return new Promise(function(resolve, reject) {
                 try {
                     if(instance==null){
-                        reject("mock未定义")
+                        if(option.error){
+                            option.error.call(scope,"mock未定义:"+option.url);
+                        }
+                        reject("mock未定义:"+option.url)
                         return;
                     }
                     new Promise(function(res,rej){
@@ -242,7 +312,7 @@ let ajax = {
                 return this.mock(opt,scope);
             }
             var request = this.createInstance();
-            opt.url = this.formatUrl(opt.url, opt.data);
+            opt.url = this.formatUrl(opt.url, opt.data,opt);
             if(opt.baseUrl!==undefined && opt.baseUrl===false){
                 request.open(opt.type, opt.url, opt.async);
             }

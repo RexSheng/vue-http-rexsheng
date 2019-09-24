@@ -48,6 +48,9 @@ var ajaxBody={
         set successStatus(fn){
             AJAXCONF.successStatus=fn;
         },
+        set missingMockCallback(fn){
+            AJAXCONF.missingMockCallback=fn;
+        },
         get timeout(){
             return AJAXCONF.timeout;
         },
@@ -141,7 +144,10 @@ rexShengPlugin.install = function(Vue, options={}) {
     AJAXCONF.successFormatCallback=options.successFormat || options.resultFormat || AJAXCONF.successFormatCallback;//返回数据的格式化
     AJAXCONF.errorFormatCallback=options.errorFormat || options.resultFormat || AJAXCONF.errorFormatCallback;
     AJAXCONF.userDefaultConfig=function(){return Object.assign({},options.defaultConfig || {},AJAXCONF.userDefaultConfig());}
-    
+    // if (!Vue) {
+	// 	//
+	// 	window.Vue=Vue=_vue_;
+	// }
     Vue[AJAXCONF.VueGlobalInstanceName]=Vue.prototype[AJAXCONF.instanceName]=ajaxBody
     
     Vue[AJAXCONF.VueGlobalInstanceName+"Success"] = function(data, message) {
@@ -152,10 +158,16 @@ rexShengPlugin.install = function(Vue, options={}) {
     }
 
     Vue[AJAXCONF.WSGlobalInstanceName]= Vue.prototype[AJAXCONF.wsInstanceName]=wsBody
+	
+	
 }
 rexShengPlugin[AJAXCONF.VueGlobalInstanceName]=ajaxBody;
 rexShengPlugin[AJAXCONF.WSGlobalInstanceName]=wsBody;
 
+if (typeof window !== 'undefined' && window.Vue) {
+    Vue[AJAXCONF.VueGlobalInstanceName]=Vue.prototype[AJAXCONF.instanceName]=ajaxBody;
+    Vue[AJAXCONF.WSGlobalInstanceName]=Vue.prototype[AJAXCONF.wsInstanceName]=wsBody;
+}  
 // _vue_[AJAXCONF.VueGlobalInstanceName]=_vue_.prototype[AJAXCONF.instanceName]=ajaxBody;
 // _vue_[AJAXCONF.WSGlobalInstanceName]=_vue_.prototype[AJAXCONF.wsInstanceName]=wsBody;
 export default rexShengPlugin;

@@ -38,6 +38,12 @@ Vue.ajax.config.baseUrl="http://localhost:8080"
 Vue.ajax.config.mockMode=false
 #成功的status码
 Vue.ajax.config.successStatus=function(status){return status==200;}
+#mock缺失时的自定义处理
+Vue.ajax.config.missingMockCallback=(opt)=>{
+    //false： 缺失mock配置时，不使用mock，使用真实url请求
+    //true: 缺失mock配置时，会error终止
+    return false; 
+}
 #修改默认配置
 Vue.ajax.config.default={type:"get",headers:{"Content-type":"application/json;charset=UTF-8"}}
 Vue.ajax.config.default=()=>{return {type:"get",headers:{"Content-type":"application/json;charset=UTF-8","Lang":localStorage.getItem("language")}}}
@@ -49,7 +55,7 @@ Vue.ajax.addMock(`String` mockUrl,{url:"/api/newurl",data:{},type:"get",success:
 #@get: @post: @delete: @put: 用于相同url但是不同请求类型的拦截
 Vue.ajax.addMock(
   {
-    "/url1":function(param){return {code:0};},
+    "/url1":function(param){return {code:0,data:param};},
     "/url2":"../static/file.json",
     "/url3":{url:"/api/newurl",data:{},type:"get",success:function(d){},error:function(err){},complete:function(){}},
     //{url:"/user/3",type:"get"}的请求会匹配到

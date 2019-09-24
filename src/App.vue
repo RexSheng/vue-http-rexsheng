@@ -200,10 +200,10 @@ export default {
     getData() {
       this.$ajax
         .send({
-          url:
-            "datacenter/userxw/getCenterData?dateFlag={dateFlag}&size={size}",
-          // type: "get" ,
-          data:{dateFlag:"2018-08-11",size:null},
+          // url:"datacenter/userxw/getCenterData",
+          url:"datacenter/userxw/getCenterData?",
+          type: "get" ,
+          data:{dateFlag:"2018-08-11姓名",size:null},
            cancel:function(cb){
               console.log(new Date())
               setTimeout(()=>{
@@ -367,7 +367,7 @@ export default {
     mockGlobal:function(){
       Vue.ajax
         .send({
-          url: "/test/mock001",
+          url: "/test/mock0012",
           data: { keyword: "管理",arr:["生",'12f'] },
           type:"post",
           success:function(d){

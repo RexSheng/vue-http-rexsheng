@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <title>Vue.js</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <style>
+        .bordered {
+            border: 1px #000 solid;
+        }
+        
+        .bg_red {
+            background-color: red;
+        }
+        
+        .active {
+            color: blue;
+        }
+    </style>
+    <script src="./vue.js"></script>
+	<script src="./http.js"></script>
+</head>
+
+<body>
+
+    <div id="app-1">
+        <input type="text" v-model="message" />
+        <button type="button" v-on:click="changeItems()">点击</button>
+        <input type="checkbox" id="checkbox" v-model="checked">
+        <label for="checkbox">{{ checked }}</label>
+
+        <div id="example-4">
+            <input type="radio" id="one" value="One" v-model="picked">
+            <label for="one">One</label>
+            <br>
+            <input type="radio" id="two" value="Two" v-model="picked">
+            <label for="two">Two</label>
+            <br>
+            <span>Picked: {{ picked }}</span>
+        </div>
+
+        <div id="example-5">
+            <select v-model="selected">
+              <option disabled value="">请选择</option>
+              <option>A</option>
+              <option>B</option>
+              <option>C</option>
+            </select>
+            <span>Selected: {{ selected }}</span>
+        </div>
+    </div>
+
+    <script>
+        // 创建一个 Vue 实例
+        var app = new Vue({
+            el: '#app-1',
+            data: {
+                message: "Hello Vue!",
+                checked: true,
+                picked: "",
+                selected: "C"
+            },
+
+            methods: {
+                changeItems: function() {
+                    console.log(this.$ajax)
+					Vue.ajax.send({
+						url:"http://49.4.68.94:9030/web/prod/prodYard/LKCOMPANY000001",
+						success:function(d){
+							console.log(d)
+						},
+						error:function(e){
+							console.warn(e)
+						},
+					})
+					this.$ajax.send({
+						url:"http://49.4.68.94:9030/web/prod/prodYard/LKCOMPANY000001",
+						success:function(d){
+							console.warn(d)
+						},
+						error:function(e){
+							console.warn(e)
+						},
+					})
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
