@@ -14,10 +14,27 @@ var ajaxBody={
     },
     interceptors:{
         setRequest:function(fn){
-            AJAXCONF.requestInterceptor=fn;
+            AJAXCONF.queue.requestInterceptorQueue["0"]=fn;
         },
         setResponse:function(fn){
-            AJAXCONF.responseInterceptor=fn;
+            AJAXCONF.queue.responseInterceptorQueue["0"]=fn;
+        },
+        addRequest:function(fn,order){
+            if(order==undefined || order==null){
+                AJAXCONF.queue.requestInterceptorQueue["0"]=fn;
+            }
+            else{
+                AJAXCONF.queue.requestInterceptorQueue[order]=fn;
+            }
+            
+        },
+        addResponse:function(fn,order){
+            if(order==undefined || order==null){
+                AJAXCONF.queue.responseInterceptorQueue["0"]=fn;
+            }
+            else{
+                AJAXCONF.queue.responseInterceptorQueue[order]=fn;
+            }
         }
     },
     config:{
@@ -27,6 +44,18 @@ var ajaxBody={
         set baseUrl(value){
             AJAXCONF.baseUrl=value;
         },
+        get jsonp(){
+            return AJAXCONF.jsonp.callbackName;
+        },
+        set jsonp(value){
+            AJAXCONF.jsonp.callbackName=value;
+        },
+        // get jsonpCallback(){
+        //     return AJAXCONF.jsonp.callbackFunction;
+        // },
+        // set jsonpCallback(value){
+        //     AJAXCONF.jsonp.callbackFunction=value;
+        // },
         get mockMode(){
             return AJAXCONF.mockMode;
         },
@@ -41,7 +70,7 @@ var ajaxBody={
                 AJAXCONF.userDefaultConfig=value;
             }
             else{
-                AJAXCONF.userDefaultConfig=function(){return value};
+                AJAXCONF.userDefaultConfig=function(option){return value};
             }
             
         },
@@ -57,9 +86,18 @@ var ajaxBody={
         set timeout(value){
             AJAXCONF.timeout=value;
         },
+        get mockStrategy(){
+            return AJAXCONF.mockStrategy;
+        },
+        set mockStrategy(value){
+            AJAXCONF.mockStrategy=value;
+        },
     },
     addMock:function(){
-        if(arguments.length==2){
+        if(arguments.length==3){
+            AJAXCONF.mockCache["@"+arguments[1]+":"+arguments[0]]=arguments[2];
+        }
+        else if(arguments.length==2){
             AJAXCONF.mockCache[arguments[0]]=arguments[1];
         }
         else if(arguments.length==1){
@@ -73,6 +111,18 @@ var ajaxBody={
         return new randomPlugin().handle(param);
     }
 }
+
+new Array("get","post","put","delete","patch","options","head").forEach(function(type){
+    ajaxBody[type]=function(url,data,successFn,errorFn,scope){
+        return new ajaxPlugin.xmlHttpRequest(scope).send({
+            url:url,
+            type:type,
+            data:data,
+            success:successFn,
+            error:errorFn
+        });
+    }
+})
 var wsBody={
     listen:function(option,sc){
         return new wsPlugin(sc).listen(option);

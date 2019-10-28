@@ -5,15 +5,14 @@
 ## Build Setup
 
 ``` bash
-# 页面直接引用（放在vue.js引用之后）
+# 调用方式一：页面直接引用（放在vue.js引用之后）
 <script src="https://rexsheng.github.io/vue-http-rexsheng/latest/http.js"></script>
+#页面引用之后，就可以使用全局Vue.ajax.send(...)或者页面实例中使用this.$ajax.send(...)了
 
-# npm安装
+# 调用方式二：npm安装
 npm install vue-http-rexsheng --save-dev
-
-# config in entry file like 'src/main.js'
+# npm安装完后，在入口文件比如'src/main.js'中配置引用
 import http from 'vue-http-rexsheng';
-
 Vue.use(http,{instanceName:"$ajax",mockInstanceName:"$mock",wsInstanceName:"$socket",
   resultFormat:function(d){
     return d.data;
@@ -23,9 +22,10 @@ Vue.use(http,{instanceName:"$ajax",mockInstanceName:"$mock",wsInstanceName:"$soc
   },errorFormat:function(d){
     return d.data;
   },defaultConfig:{}})
-#设置ajax全局请求过滤器，option参数为当前请求option
+
+#设置ajax全局请求拦截器，option参数为当前请求option
 Vue.ajax.interceptors.setRequest(function(option,request){return option;})
-#设置ajax全局响应过滤器,option参数为全部响应对象
+#设置ajax全局响应拦截器,option参数为全部响应对象
 {
   data:data,//响应数据
   status:req.status,//响应状态码
@@ -35,10 +35,17 @@ Vue.ajax.interceptors.setRequest(function(option,request){return option;})
   request:req//当前请求
 }
 Vue.ajax.interceptors.setResponse(function(option,request){return option;})
+#1.2.0新增设置多个拦截器,使用addRequest或者addResponse,第二个参数为顺序数字，数字越小，优先级越高，默认为0
+Vue.ajax.interceptors.addRequest(function(option,request){return option;},2)
+Vue.ajax.interceptors.addResponse(function(option,request){return option;},2)
+#1.2.0新增别名请求get,post,put,delete,options,patch,head,例如：
+Vue.ajax.get(`String` url,`Object` data,`Function` successFn,`Function` errorFn,`Object` Scope)
 #设置ajax全局前缀路径
 Vue.ajax.config.baseUrl="http://localhost:8080"
 #设置ajax全局是否启用mockserver,默认`false`
 Vue.ajax.config.mockMode=false
+#1.2.0新增设置全局mock策略,默认`scope`：局部优先，`global`:全局配置优先，忽略局部配置
+Vue.ajax.config.mockStrategy="scope"
 #成功的status码
 Vue.ajax.config.successStatus=function(status){return status==200;}
 #mock缺失时的自定义处理
@@ -67,6 +74,8 @@ Vue.ajax.addMock(
     "@delete:/user/3":"../static/filedetail.json",
   }
 )
+#jsonp的回调函数key名称，http://xxx?callback=jsonp_123
+Vue.ajax.config.jsonp="callback"
 #全局配置发送socket未开启时数据延迟毫秒
 Vue.socket.config.reconnectTimeout=30
 #全局配置发送socket的url前缀路径
@@ -123,15 +132,16 @@ this.$ajax.send(option)
 |type            |类型                     |`get` `post` `delete` `put`|
 |url             |请求地址                  | 必填 |
 |baseUrl             |请求地址的前缀                  | `boolean` `string`  设置为`false`时，不使用全局配置url：Vue.ajax.config.baseUrl；设置为字符串时，优先级高于全局配置 |
-|~~async~~           |~~是否异步请求~~              | ~~默认`true`~~ |
+|~~async~~           |~~是否异步请求~~ （无效配置，请忽略）             | ~~默认`true`~~ |
 |headers         |请求headers对象           | 例如`{"Content-type":"application/json;charset=UTF-8"}` |
 |timeout         |超时时间毫秒               | 毫秒数 |
 |withCredentials |跨域响应设置cookie         |默认`false` |
 |data |请求发送的数据         |Object/Array |
-|dataType |表明要发送的数据格式         |默认`"json"` `"xml"` `"form"` `"formData"`(使用formdata表单发送数据，通常用于文件上传)|
+|dataType |表明要发送的数据格式         |默认`"json"` `"xml"` `"form"` `"formData"`(使用formdata表单发送数据，通常用于文件上传) `"jsonp"`|
 |responseType|返回的数据类型|默认`""` `"json"` `"blob"` `"text"` `"arraybuffer"` `"document"`
 |transform |自定义格式化请求前数据的函数         | 参数为当前配置的data数据<br/> 例如`function(data){return JSON.stringify(data);}` |
 |mock|mock模拟数据请求|`true(需调用Vue.ajax.addMock(url,function)来拦截本次请求)` `function(data){//模拟请求，参数data为option的data}` `String请求的json文件地址` `{url:'/newurl',type:'get',data:{},complete:function(){},success:function(d){},error:function(err){}}`|
+|mockMode|严格使用指定的mock模式，不遵循全局配置策略或者局部配置策略1.2.0新增|`boolean` |
 |success|请求成功的回调|`function(data,req){}` |
 |error|请求失败的回调|`function(err,req){}` |
 |complete|请求完成的回调|`function(){}` |
@@ -141,6 +151,8 @@ this.$ajax.send(option)
 |onprogress |进度事件         |`function(d){}` |
 |onloadend |请求结束事件         |`function(d){}` |
 |cancel |取消请求函数，若要取消该请求时在函数内部调用cb()来执行取消         |`function(cb){if(someCondition){cb();}}` |
+|jsonp |jsonp使用的函数key         |默认`callback` |
+|jsonpCallback |jsonp使用的函数名称         |默认`jsonp_{随机数}` |
 
 #socket配置
 ```javascript

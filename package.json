@@ -1,7 +1,7 @@
 {
   "name": "vue-http-rexsheng",
   "description": "A Vue.js plugin for providing http request",
-  "version": "1.1.13",
+  "version": "1.2.0",
   "author": "Rex Sheng <shengxupeng@126.com>",
   "license": "MIT",
   "private": false,
@@ -14,11 +14,12 @@
     "vue",
     "vuejs",
     "ajax",
-    "http",
+    "jsonp",
     "socket",
     "websocket",
     "vue-ajax",
     "vue-http",
+    "vue-jsonp",
     "vue-socket",
     "vue-websocket"
   ],

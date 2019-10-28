@@ -37,6 +37,9 @@
       <li>
         <button @click="mockProxy()">mock代理</button>
       </li>
+      <li>
+        <button @click="jsonp()">jsonp</button>
+      </li>
     </ul>
     <ul>
       <li>
@@ -83,7 +86,7 @@ export default {
     };
   },
   mounted() {
-    this.mock()
+    // this.mock()
     var pageInstance=this.$socket.listen({
       url:"/websocket",
       onmessage:function(e){
@@ -198,19 +201,30 @@ export default {
         });
     },
     getData() {
+      // this.$ajax
+      //   .send({
+      //     // url:"datacenter/userxw/getCenterData",
+      //     url:"http://1.3.149.81:9030/web/prod/prodYard/LKCOMPANY000001",
+      //     type: "get" ,
+      //     data:{dateFlag:"2018-08-11姓名",size:null,index:32},
+      //     headers:{Lang:"zh;"},
+      //      cancel:function(cb){
+      //         console.log(new Date())
+      //         setTimeout(()=>{
+      //           cb()
+      //         },4000)
+      //       }
+      //   })
+      //   .then(d => {
+      //     console.log("success1", d, this.msg);
+      //   })
+      //   .catch(d => {
+      //     console.log("error1", d);
+      //   });
+      console.log(this.$ajax)
       this.$ajax
-        .send({
-          // url:"datacenter/userxw/getCenterData",
-          url:"datacenter/userxw/getCenterData?",
-          type: "get" ,
-          data:{dateFlag:"2018-08-11姓名",size:null},
-           cancel:function(cb){
-              console.log(new Date())
-              setTimeout(()=>{
-                cb()
-              },4000)
-            }
-        })
+        .get("http://1.3.149.81:9030/web/prod/prodYard/LKCOMPANY000001",
+        {dateFlag:"2018-08-11姓名",size:null,index:32})
         .then(d => {
           console.log("success1", d, this.msg);
         })
@@ -222,8 +236,9 @@ export default {
       Vue.ajax
         .send({
           url:
-            "http://xconsole.rrslj.com/datacenter/userxw/getCenterData2?dateFlag=2018-08-10",
-          type: "get"
+            "http://xconsole.rrslj.com/datacenter/userxw/getCenterData?dateFlag=2018-08-10",
+          type: "get",
+          mockMode:false,
         })
         .then(d => {
           console.log("success2", d, this.msg);
@@ -271,7 +286,7 @@ export default {
       var self = this;
       Vue.ajax
         .send({
-          url: Vue.ajax.prefix+"/api/upload",
+          url: "/file/api/upload",
           type: "post",
           dataType: "formdata",
           headers: { Authorization: "Basic c2hlbmd4cDoxMjM=" },
@@ -302,7 +317,7 @@ export default {
       this.downloadPro=0;
       Vue.ajax
         .send({
-          url: Vue.ajax.prefix+"/api/download?file={file}",
+          url: "/file/api/download?file={file}",
           type: "get",
           dataType: "formdata",
           headers: { Authorization: "Basic c2hlbmd4cDoxMjM=" },
@@ -367,7 +382,7 @@ export default {
     mockGlobal:function(){
       Vue.ajax
         .send({
-          url: "/test/mock0012",
+          url: "/test/mock001",
           data: { keyword: "管理",arr:["生",'12f'] },
           type:"post",
           success:function(d){
@@ -419,6 +434,8 @@ export default {
           error:function(d,req){
             console.log("error mockGlobal", d,req);
           }
+        }).then((d)=>{
+          console.log("su",d,this.msg);
         })
         Vue.ajax
         .send({
@@ -436,7 +453,24 @@ export default {
           error:function(d,req){
             console.log("error mockGlobal", d,req);
           }
-        })
+        },this)
+    },
+    jsonp:function(){
+      // https://www.runoob.com/try/ajax/jsonp.php?jsoncallback=callbackFunction
+      //http://xconsole.rrslj.com/datacenter/userxw/getCenterData2?dateFlag=2018-08-10
+      Vue.ajax
+        .send({
+          url: "https://www.runoob.com/try/ajax/jsonp.php",
+          dataType:"jsonp",
+          jsonp:"jsoncallback",
+          jsonpCallback:"callbackFunctionC",
+          success:function(d){
+            console.log("success jsonp", d, this.msg);
+          },
+          error:function(d,req){
+            console.log("error jsonp", d,req);
+          }
+        },this)
     }
   }
 };

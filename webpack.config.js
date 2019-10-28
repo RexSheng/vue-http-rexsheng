@@ -100,6 +100,18 @@ module.exports = {
         //   }
         // }
       },
+      '/file': {
+        target: 'http://localhost:8700',
+        pathRewrite: {'^/file' : ''},//请求url不携带有/file
+        changeOrigin:true,
+        secure:false
+        // bypass: function(req, res, proxyOptions) {
+        //   if (req.headers.accept.indexOf('html') !== -1) {
+        //     console.log('Skipping proxy for browser request.');
+        //     return '/index.html';
+        //   }
+        // }
+      },
       // proxy: [{
       //   context: ['/auth', '/api'],//多个路径代理
       //   target: 'http://localhost:3000',

@@ -19,8 +19,8 @@
         }
     </style>
     <script src="./vue.js"></script>
-	<script src="https://rexsheng.github.io/vue-http-rexsheng/latest/http.js"></script>
-	
+	<!-- <script src="https://rexsheng.github.io/vue-http-rexsheng/latest/http.js"></script> -->
+	<script src="./http.js"></script>
 </head>
 
 <body>
@@ -67,23 +67,25 @@
                 changeItems: function() {
                     console.log(this.$ajax)
 					Vue.ajax.send({
-						url:"http://49.4.68.94:9030/web/prod/prodYard/LKCOMPANY000001",
+						url:"http://1.3.149.81:9030/web/prod/prodYard/LKCOMPANY000001",
 						success:function(d){
 							console.log(d)
 						},
 						error:function(e){
 							console.warn(e)
 						},
-					})
-					this.$ajax.send({
-						url:"http://49.4.68.94:9030/web/prod/prodYard/LKCOMPANY000001",
-						success:function(d){
-							console.warn(d)
-						},
-						error:function(e){
-							console.warn(e)
-						},
-					})
+                    })
+                    this.$ajax.get("http://1.3.149.81:9030/web/prod/prodYard/LKCOMPANY000001")
+                    .then(console.log).catch(console.error)
+					// this.$ajax.send({
+					// 	url:"http://1.3.149.81:9030/web/prod/prodYard/LKCOMPANY000001",
+					// 	success:function(d){
+					// 		console.warn(d)
+					// 	},
+					// 	error:function(e){
+					// 		console.warn(e)
+					// 	},
+					// })
                 }
             }
         });

@@ -1,16 +1,29 @@
 import Vue from 'vue'
 import ajax from './lib/index'
 Vue.use(ajax)
-// Vue.ajax.interceptors.setResponse(d=>{
-//   console.warn("response",d);
-//   return Promise.resolve(d.data);
-// //   return rlt;
-// })
-// Vue.ajax.interceptors.setRequest(d=>{
-//   console.warn("request",d,this);
-//   return d;
-// })
-Vue.ajax.prefix="http://192.168.8.72:8700";
+Vue.ajax.interceptors.setResponse(d=>{
+  console.warn("response",new Date(),d);
+  return Promise.resolve(d);
+})
+Vue.ajax.interceptors.addResponse(d=>{
+    return new Promise(res=>{
+        setTimeout(()=>{
+            console.warn("response2",new Date(),d);
+            res(d);
+        },0)
+        
+    })
+    
+  },2)
+Vue.ajax.interceptors.setRequest(d=>{
+  console.warn("request",d,this);
+  return d;
+})
+Vue.ajax.interceptors.addRequest(d=>{
+    console.warn("request2",d,this);
+    return Promise.resolve(d);
+  },2)
+// Vue.ajax.prefix="http://192.168.8.72:8700";
 Vue.ajax.config.baseUrl="";
 Vue.ajax.config.mockMode=true
 Vue.ajax.config.timeout=500000
@@ -33,7 +46,7 @@ Vue.ajax.addMock({
     "/test/mockfile":"../src/assets/data/01.json",
     "@get:/test/aaa":()=>{return {"dd":1};},
     "@post:/test/aaa":()=>{return {"dd":"post"};},
-    "@post:/test/mock001":()=>{return {"001":"post"};},
+    "@post:/test/mock001":()=>{return Promise.resolve({"001":"post"});},
     "@get:datacenter/userxw/getCenterData":(d)=>{return{"ol":"ok","param":d}},
 });
 // Vue.ajax.config.successStatus=function(d){return d>300};
