@@ -25,7 +25,7 @@ Vue.ajax.interceptors.addRequest(d=>{
   },2)
 // Vue.ajax.prefix="http://192.168.8.72:8700";
 Vue.ajax.config.baseUrl="";
-Vue.ajax.config.mockMode=true
+Vue.ajax.config.mockMode=false
 Vue.ajax.config.timeout=500000
 // Vue.ajax.addMock("/test/mock001",function(d){return d;})
 Vue.ajax.addMock({

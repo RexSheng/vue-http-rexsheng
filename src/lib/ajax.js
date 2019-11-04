@@ -312,10 +312,17 @@ let ajax = {
                                         url+=key+"="+encodeURIComponent(newData[key]==null?"":newData[key])+"&";
                                     });
                                 }
-                                
-                                if(url.endsWith("&")){
-                                    url=url.substr(0,url.length-1);
+                                if (typeof String.prototype.endsWith !== 'function') {
+                                    if(url.indexOf("&", url.length - 1) !== -1){
+                                        url=url.substr(0,url.length-1);
+                                    }
                                 }
+                                else{
+                                    if(url.endsWith("&")){
+                                        url=url.substr(0,url.length-1);
+                                    }
+                                }
+                                
                             }
                         }
                        
@@ -337,8 +344,8 @@ let ajax = {
             }
             var d={
                 data:data,
-                status:req.status,
-                statusText:req.statusText,
+                status:req!=null?req.status:200,
+                statusText:req!=null?req.statusText:null,
                 headers:headers,
                 config:config,
                 request:req
@@ -360,36 +367,70 @@ let ajax = {
         },
         this.mock=function(option,scope){
             var instance=this.mockInstance;
+            var formatResult=this.formatResult;
+            var _this_=this;
             return new Promise(function(resolve, reject) {
                 try {
-                    if(instance==null){
-                        if(option.error){
-                            option.error.call(scope,"mock未定义:"+option.url);
-                        }
-                        reject("mock未定义:"+option.url)
-                        return;
-                    }
-                    new Promise(function(res,rej){
-                        var dd=instance.call(scope, option.data,option,res, rej);
-                        // var dd=new randomPlugin().handle(dj);
-                        res(dd);
-                    }).then(function(dd){
-                        if(option.success){
-                            option.success.call(scope,dd);
-                        }
-                        resolve(dd);
-                    }).catch(function(ee){
-                        if(option.error){
-                            option.error.call(scope,ee);
-                        }
-                        reject(ee);
+                    _this_.getAllRequestInterceptors(scope,option,null).then(function(newOpt){
+                    
+                        new Promise(function(res,rej){
+                            if(instance==null){
+                                rej("mock未定义:"+newOpt.url);
+                            }
+                            else{
+                                var d=instance.call(scope, newOpt.data,newOpt,res, rej);
+                                res(d);
+                            }
+                        }).then(function(d){
+                            formatResult.call(_this_,scope,d, null,newOpt,true).
+                                then(dd=>{
+                                    if(newOpt.success){
+                                        newOpt.success.apply(scope,dd);
+                                    }
+                                    resolve(dd[0]);
+                                }).
+                                catch(ee=>{
+                                    if(newOpt.error){
+                                        newOpt.error.apply(scope,ee);
+                                    }
+                                    reject(ee[0] || ee);
+                                })
+                        }).catch(function(e){
+                            formatResult.call(_this_,scope,e, null,option,false).then(dd=>{
+                                if(option.error){
+                                    option.error.apply(scope,dd);
+                                }
+                                reject(dd[0]);
+                            }).catch(ee=>{
+                                if(option.error){
+                                    option.error.apply(scope,ee);
+                                }
+                                reject(ee[0] || ee)
+                            })
+                        })
+                    })
+                    .catch(function(e){
+                        formatResult.call(_this_,scope,e, null,option,false).then(dd=>{
+                            if(option.error){
+                                option.error.apply(scope,dd);
+                            }
+                            reject(dd[0]);
+                        }).catch(ee=>{
+                            if(option.error){
+                                option.error.apply(scope,ee);
+                            }
+                            reject(ee[0] || ee)
+                        })
                     })
                     
+                    
                 } catch (err) {
-                    if(option.error){
-                        option.error.call(scope,d);
-                    }
-                    reject(err);
+                    // if(option.error){
+                    //     option.error.call(scope,d);
+                    // }
+                    // reject(err);
+
+                    formatResult.call(_this_,scope,err, null,option,false).then(dd=>reject(dd[0])).catch(ee=>reject(ee[0] || ee));
                 }
             });
         },
@@ -400,86 +441,161 @@ let ajax = {
             var _this_=this;
             return new Promise(function(resolve,reject){
                 var callbackName = option.jsonp || AJAXCONF.jsonp.callbackName
-                var callbackFunction = option.jsonpCallback || 'jsonp_' + _this_.getRandomJsonpCallbackStr();
+                var callbackFunction = option.jsonpCallback;
+                var newCallbackFunctionName=null;
+                var needDelFunction=false;
+                if(callbackFunction!==null && callbackFunction!==undefined){
+                    if(Object.prototype.toString.call(callbackFunction)==='[object Function]'){
+                        needDelFunction=true;
+                        newCallbackFunctionName ='jsonp_' + _this_.getRandomJsonpCallbackStr();
+                    }
+                    else if(Object.prototype.toString.call(callbackFunction)==='[object String]'){
+                        if(!window[callbackFunction]){
+                            needDelFunction=true;
+                            newCallbackFunctionName =callbackFunction + _this_.getRandomJsonpCallbackStr();
+                        }
+                        else{
+                            newCallbackFunctionName=callbackFunction;
+                        }
+                    }
+                }
+                else{
+                    newCallbackFunctionName ='jsonp_' + _this_.getRandomJsonpCallbackStr();
+                    needDelFunction=true;
+                }
                 var newData=option.data || {}
-                newData[callbackName]=callbackFunction;
+                newData[callbackName]=newCallbackFunctionName;
                 option.url = _this_.formatUrl(option.url, newData,option);
                 delete option.jsonp;
                 delete option.jsonpCallback;
 
-                var timeoutTimer = null
-                if (option.timeout!==undefined && option.timeout!==null) {
-                    timeoutTimer = setTimeout(function () {
+                
+                _this_.getAllRequestInterceptors(scope,option,null).then(function(newOpt){
+                    var headNode = document.querySelector('head')
+                    var paddingScript = document.createElement('script');
+                    
+                    // Add error listener.
+                    paddingScript.addEventListener('error', onError)
+                    paddingScript.src = newOpt.url
+                    
+                     /**
+                     * Padding script on-error event.
+                     * @param {Event} event
+                     */
+                    function onError (event) {
                         removeErrorListener()
-                        headNode.removeChild(paddingScript)
-                        delete window[callbackFunction]
-                        // reject({ statusText: 'Request Timeout', status: 408 })
-                        _this_.formatResult(scope,{ statusText: 'Request Timeout', status: 408 }, null,option,false).then(dd=>{
-                            if(option.error){
-                                option.error.apply(scope,dd);
+                        clearTimeout(timeoutTimer);
+                        _this_.formatResult(scope,event, { statusText: 'Bad Request', status: 400 },newOpt,false).then(dd=>{
+                            if(newOpt.error){
+                                newOpt.error.apply(scope,dd);
                             }
                             reject(dd[0]);
                         }).catch(ee=>{
-                            if(option.error){
-                                option.error.apply(scope,ee);
+                            if(newOpt.error){
+                                newOpt.error.apply(scope,ee);
                             }
-                            reject(ee[0]);
+                            reject(ee[0] || ee);
                         })
-                      }, option.timeout)
-                }
-                // Create global function.
-                window[callbackFunction] = function (json) {
-                    clearTimeout(timeoutTimer)
-                    removeErrorListener()
-                    headNode.removeChild(paddingScript)
-                    _this_.formatResult(scope,json, { statusText: 'Success', status: 200 },option,true).
-                        then(dd=>{
-                            if(option.success){
-                                option.success.apply(scope,dd);
+                        if(needDelFunction){
+                            delete window[newCallbackFunctionName]
+                        }
+                    }
+
+                    /**
+                     * Remove on-error event listener.
+                     */
+                    function removeErrorListener () {
+                        paddingScript.removeEventListener('error', onError)
+                    }
+
+
+
+                    var timeoutTimer = null
+                    if (newOpt.timeout!==undefined && newOpt.timeout!==null) {
+                        timeoutTimer = setTimeout(function () {
+                            removeErrorListener()
+                            if(paddingScript.parentNode){
+                                paddingScript.parentNode.removeChild(paddingScript)
                             }
-                            resolve(dd[0]);
-                        }).
-                        catch(ee=>reject(ee[0]))
-                    delete window[callbackFunction]
-                }
+                            if(needDelFunction){
+                                delete window[newCallbackFunctionName]
+                            }
+                            // reject({ statusText: 'Request Timeout', status: 408 })
+                            _this_.formatResult(scope,{ statusText: 'Request Timeout', status: 408 }, null,newOpt,false).then(dd=>{
+                                if(newOpt.error){
+                                    newOpt.error.apply(scope,dd);
+                                }
+                                reject(dd[0]);
+                            }).catch(ee=>{
+                                if(newOpt.error){
+                                    newOpt.error.apply(scope,ee);
+                                }
+                                reject(ee[0] || ee);
+                            })
+                        }, newOpt.timeout)
+                    }
+                    var json;
+                    
+                    const oldCallback=Object.prototype.toString.call(callbackFunction)==='[object Function]'?callbackFunction:window[callbackFunction];
 
-                var headNode = document.querySelector('head')
-                var paddingScript = document.createElement('script');
+                    paddingScript.onload=function(){
+                        clearTimeout(timeoutTimer)
+                        removeErrorListener()
+                        if(paddingScript.parentNode){
+                            paddingScript.parentNode.removeChild(paddingScript)
+                        }
+                        _this_.formatResult(scope,json, { statusText: 'Success', status: 200 },newOpt,true).
+                            then(dd=>{
+                                if(!needDelFunction || Object.prototype.toString.call(callbackFunction)==='[object Function]'){
+                                    oldCallback.apply(scope,dd);
+                                    if(Object.prototype.toString.call(callbackFunction)!=='[object Function]'){
+                                        window[callbackFunction]=oldCallback;
+                                    }
+                                }
+                                if(newOpt.success){
+                                    newOpt.success.apply(scope,dd);
+                                }
+                                resolve(dd[0]);
+                            }).
+                            catch(ee=>{
+                                if(!needDelFunction || Object.prototype.toString.call(callbackFunction)==='[object Function]'){
+                                    oldCallback.apply(scope,dd);
+                                    if(Object.prototype.toString.call(callbackFunction)!=='[object Function]'){
+                                        window[callbackFunction]=oldCallback;
+                                    }
+                                }
+                                if(newOpt.error){
+                                    newOpt.error.apply(scope,ee);
+                                }
+                                reject(ee[0]|| ee);
+                            })
+                            if(needDelFunction){
+                                delete window[newCallbackFunctionName]
+                            }
+                    }
+                    if(!needDelFunction && Object.prototype.toString.call(callbackFunction)!=='[object Function]'){
+                        window[callbackFunction] = function (jsonData) {
+                            json=jsonData;
+                        }
+                    }
+                    else{
+                        window[newCallbackFunctionName] = function (jsonData) {
+                            json=jsonData;
+                        }
+                    }
+                    
+
+                    
+
+                    // Append to head element.
+                    headNode.appendChild(paddingScript)
+
+                    
+                })
+
                 
-                // Add error listener.
-                paddingScript.addEventListener('error', onError)
 
-                // Append to head element.
-                paddingScript.src = option.url
-                headNode.appendChild(paddingScript)
-
-                /**
-                 * Padding script on-error event.
-                 * @param {Event} event
-                 */
-                function onError (event) {
-                    removeErrorListener()
-                    clearTimeout(timeoutTimer);
-                    _this_.formatResult(scope,event, { statusText: 'Bad Request', status: 400 },option,false).then(dd=>{
-                        if(option.error){
-                            option.error.apply(scope,dd);
-                        }
-                        reject(dd[0]);
-                    }).catch(ee=>{
-                        if(option.error){
-                            option.error.apply(scope,ee);
-                        }
-                        reject(ee[0]);
-                    })
-                    delete window[callbackFunction]
-                }
-
-                /**
-                 * Remove on-error event listener.
-                 */
-                function removeErrorListener () {
-                    paddingScript.removeEventListener('error', onError)
-                }
+               
             });
         },
         this.getRandomJsonpCallbackStr=function(){
@@ -656,14 +772,14 @@ let ajax = {
                                 if (AJAXCONF.successStatus(request.status)) { // 200代表执行成功
                                     if (responseContentType.indexOf("application/json")>-1) {
                                             new Promise(function(res, rej) {
-                                                var cc = JSON.parse(request.response);
+                                                var cc = JSON.parse(request.response===undefined?request.responseText:request.response);
                                                 res(cc);
                                             })
                                             .then(d =>
                                                 formatResult.call(_this_,scope,d, request,newOpt,true).
                                                     then(dd=>{
                                                         if(newOpt.success){
-                                                            newOpt.success.apply(scope,dd);
+                                                            newOpt.success.apply(scope,dd)
                                                         }
                                                         resolve(dd[0]);
                                                     }).
@@ -671,7 +787,7 @@ let ajax = {
                                                         if(newOpt.error){
                                                             newOpt.error.apply(scope,ee);
                                                         }
-                                                        reject(ee[0]);
+                                                        reject(ee[0] || ee);
                                                     })
                                              )
                                             .catch(e => formatResult.call(_this_,scope,e, request,newOpt,false).then(dd=>{
@@ -683,7 +799,7 @@ let ajax = {
                                                 if(newOpt.error){
                                                     newOpt.error.apply(scope,ee);
                                                 }
-                                                reject(ee[0]);
+                                                reject(ee[0] || ee);
                                             })
                                             )
                                         
@@ -697,7 +813,7 @@ let ajax = {
                                             if(newOpt.error){
                                                 newOpt.error.apply(scope,ee);
                                             }
-                                            reject(ee[0]);
+                                            reject(ee[0] || ee);
                                         });
                                     } else {
                                         formatResult.call(_this_,scope,request.response, request,newOpt,true).then(dd=>{
@@ -709,7 +825,7 @@ let ajax = {
                                             if(newOpt.error){
                                                 newOpt.error.apply(scope,ee);
                                             }
-                                            reject(ee[0]);
+                                            reject(ee[0]|| ee);
                                         });
                                     }
 
@@ -730,7 +846,7 @@ let ajax = {
                                                 }
                                                 r2(dd[0]);
                                             }).
-                                            catch(ee=>r2(ee[0]))
+                                            catch(ee=>r2(ee[0] || ee))
                                     }).then(function(d){
                                         reject(d);
                                     }).catch(function(e){
@@ -747,6 +863,7 @@ let ajax = {
                                 delete request["_complete"]
                             }
                         };
+                        
                     })
                     .catch(function(e){
                         formatResult.call(_this_,scope,request.responseText || e, request,opt,false).then(dd=>{
@@ -758,12 +875,12 @@ let ajax = {
                             if(opt.error){
                                 opt.error.apply(scope,ee);
                             }
-                            reject(ee[0])
+                            reject(ee[0] || ee)
                         })
                     })
                     
                 } catch (err) {
-                    formatResult.call(_this_,scope,err, request,opt,false).then(dd=>reject(dd[0])).catch(ee=>reject(ee[0]));
+                    formatResult.call(_this_,scope,err, request,opt,false).then(dd=>reject(dd[0])).catch(ee=>reject(ee[0] || ee));
                 }
             });
 

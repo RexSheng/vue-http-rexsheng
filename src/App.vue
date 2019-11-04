@@ -73,6 +73,9 @@
 </template>
 
 <script>
+window.jsonpcall=function(d){
+  console.log("window jsonp",d);
+}
 import Vue from "vue";
 export default {
   name: "app",
@@ -86,6 +89,7 @@ export default {
     };
   },
   mounted() {
+    
     // this.mock()
     var pageInstance=this.$socket.listen({
       url:"/websocket",
@@ -224,13 +228,16 @@ export default {
       console.log(this.$ajax)
       this.$ajax
         .get("http://1.3.149.81:9030/web/prod/prodYard/LKCOMPANY000001",
-        {dateFlag:"2018-08-11姓名",size:null,index:32})
-        .then(d => {
-          console.log("success1", d, this.msg);
+        {dateFlag:"2018-08-11姓名",size:null,index:32},function(d){
+          console.log("success00",d)
+          
         })
-        .catch(d => {
-          console.log("error1", d);
-        });
+        // .then(d => {
+        //   console.log("success1", d, this.msg);
+        // })
+        // .catch(d => {
+        //   console.log("error1", d);
+        // });
     },
     get404() {
       Vue.ajax
@@ -419,24 +426,24 @@ export default {
         })
     },
     mockProxy:function(){
-      Vue.ajax
-        .send({
-          url: "/test/mockfile",
-          mock:{
-            url:"/test/aaa",
-            success:function(d){
-              console.log("get proxy", d, this.msg);
-            },
-          },
-          success:function(d){
-            console.log("success mockGlobal", d, this.msg);
-          },
-          error:function(d,req){
-            console.log("error mockGlobal", d,req);
-          }
-        }).then((d)=>{
-          console.log("su",d,this.msg);
-        })
+      // Vue.ajax
+      //   .send({
+      //     url: "/test/mockfile",
+      //     mock:{
+      //       url:"/test/aaa",
+      //       success:function(d){
+      //         console.log("get proxy", d, this.msg);
+      //       },
+      //     },
+      //     success:function(d){
+      //       console.log("success mockGlobal", d, this.msg);
+      //     },
+      //     error:function(d,req){
+      //       console.log("error mockGlobal", d,req);
+      //     }
+      //   }).then((d)=>{
+      //     console.log("su",d,this.msg);
+      //   })
         Vue.ajax
         .send({
           url: "/test/mockfile",
@@ -455,15 +462,19 @@ export default {
           }
         },this)
     },
+    jsonpVueCallback(d){
+      console.log("vue内部",d,this.msg)
+    },
     jsonp:function(){
       // https://www.runoob.com/try/ajax/jsonp.php?jsoncallback=callbackFunction
       //http://xconsole.rrslj.com/datacenter/userxw/getCenterData2?dateFlag=2018-08-10
+      
       Vue.ajax
         .send({
           url: "https://www.runoob.com/try/ajax/jsonp.php",
           dataType:"jsonp",
           jsonp:"jsoncallback",
-          jsonpCallback:"callbackFunctionC",
+          // jsonpCallback:this.jsonpVueCallback,
           success:function(d){
             console.log("success jsonp", d, this.msg);
           },

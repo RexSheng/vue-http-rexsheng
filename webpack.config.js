@@ -1,6 +1,9 @@
 var path = require('path')
 var webpack = require('webpack')
 // var ExtractTextPlugin = require("extract-text-webpack-plugin")
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
+    .BundleAnalyzerPlugin;
+const packageInfo=require("./package.json")
 module.exports = {
   entry: process.env.NODE_ENV === 'production'?'./src/lib/index.js':'./src/main.js',
   // entry: './src/lib/index.js',//资源入口文件
@@ -10,7 +13,7 @@ module.exports = {
     filename: 'http.js',//输出的主文件
     library: 'vuehttprexsheng',//库名，此名称用于require('vuedialogrexsheng')
     libraryTarget: 'umd',//目标平台，libraryTarget会生成不同umd的代码,可以只是commonjs标准的，也可以是指amd标准的，也可以只是通过script标签引入的。
-    umdNamedDefine: true//会对 UMD 的构建过程中的 AMD 模块进行命名。否则就使用匿名的 define。
+    umdNamedDefine: true,//会对 UMD 的构建过程中的 AMD 模块进行命名。否则就使用匿名的 define。
   },
   module: {
     rules: [
@@ -23,6 +26,9 @@ module.exports = {
       },      {
         test: /\.vue$/,
         loader: 'vue-loader',
+         //打包速度优化RexSheng无明显效果
+        include: [path.resolve(__dirname, 'src')],
+        // exclude: process.env.NODE_ENV === 'production'?/node_modules\/core-js/:[],
         options: {
           // transformToRequire: {
           //     img: 'src',
@@ -41,6 +47,8 @@ module.exports = {
       {
         test: /\.js$/,
         loader: 'babel-loader',
+          //打包速度优化RexSheng无明显效果
+        include: [path.resolve(__dirname, 'src')],
         exclude: /node_modules/
       },
       {
@@ -58,14 +66,23 @@ module.exports = {
               name: 'fonts/[name].[hash:7].[ext]'
           }
       }
-    ],
+    ]
+    // .concat(process.env.NODE_ENV === 'production'?[]:[{
+    //   test: /\.js$/,
+    //   loader: 'babel-loader',
+    //    //打包速度优化RexSheng无明显效果
+    //   include: [path.resolve(__dirname, 'src')],
+    //   exclude: /node_modules/
+    // }]),
     
   },
   resolve: {
     alias: {
       'vue$': 'vue/dist/vue.esm.js'
     },
-    extensions: ['*', '.js', '.vue', '.json']
+    extensions: ['*', '.js', '.vue', '.json'],
+    //打包速度优化RexSheng有明显效果
+    modules: [path.resolve(__dirname, 'src'),'node_modules'],
   },
   devServer: {
     historyApiFallback: true,
@@ -101,7 +118,7 @@ module.exports = {
         // }
       },
       '/file': {
-        target: 'http://localhost:8700',
+        target: 'http://49.234.192.99:8700',
         pathRewrite: {'^/file' : ''},//请求url不携带有/file
         changeOrigin:true,
         secure:false
@@ -123,10 +140,12 @@ module.exports = {
   },
   devtool: '#eval-source-map',
   // assetsSubDirectory: 'static',
+  plugins:[new BundleAnalyzerPlugin()],
 }
 
 if (process.env.NODE_ENV === 'production') {
   module.exports.devtool = '#source-map'
+  // module.exports.devtool = false
   // http://vue-loader.vuejs.org/en/workflow/production.html
   module.exports.plugins = (module.exports.plugins || []).concat([
     new webpack.DefinePlugin({
@@ -143,6 +162,7 @@ if (process.env.NODE_ENV === 'production') {
     new webpack.LoaderOptionsPlugin({
       minimize: true
     }),
+    
     // new ExtractTextPlugin("style.css")
   ])
 }

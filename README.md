@@ -26,7 +26,7 @@ Vue.use(http,{instanceName:"$ajax",mockInstanceName:"$mock",wsInstanceName:"$soc
 #设置ajax全局请求拦截器，option参数为当前请求option
 Vue.ajax.interceptors.setRequest(function(option,request){return option;})
 #设置ajax全局响应拦截器,option参数为全部响应对象
-{
+option={
   data:data,//响应数据
   status:req.status,//响应状态码
   statusText:req.statusText,//状态
@@ -39,7 +39,7 @@ Vue.ajax.interceptors.setResponse(function(option,request){return option;})
 Vue.ajax.interceptors.addRequest(function(option,request){return option;},2)
 Vue.ajax.interceptors.addResponse(function(option,request){return option;},2)
 #1.2.0新增别名请求get,post,put,delete,options,patch,head,例如：
-Vue.ajax.get(`String` url,`Object` data,`Function` successFn,`Function` errorFn,`Object` Scope)
+Vue.ajax.get(`String` url,`Object` data,`Function` success,`Function` error,`Object` scope)
 #设置ajax全局前缀路径
 Vue.ajax.config.baseUrl="http://localhost:8080"
 #设置ajax全局是否启用mockserver,默认`false`
@@ -152,7 +152,7 @@ this.$ajax.send(option)
 |onloadend |请求结束事件         |`function(d){}` |
 |cancel |取消请求函数，若要取消该请求时在函数内部调用cb()来执行取消         |`function(cb){if(someCondition){cb();}}` |
 |jsonp |jsonp使用的函数key         |默认`callback` |
-|jsonpCallback |jsonp使用的函数名称         |默认`jsonp_{随机数}` |
+|jsonpCallback |jsonp使用的函数名称         |`Function` `String`默认`jsonp_{随机数}` |
 
 #socket配置
 ```javascript

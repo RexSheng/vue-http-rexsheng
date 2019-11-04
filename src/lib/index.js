@@ -113,14 +113,125 @@ var ajaxBody={
 }
 
 new Array("get","post","put","delete","patch","options","head").forEach(function(type){
-    ajaxBody[type]=function(url,data,successFn,errorFn,scope){
-        return new ajaxPlugin.xmlHttpRequest(scope).send({
-            url:url,
-            type:type,
-            data:data,
-            success:successFn,
-            error:errorFn
-        });
+    ajaxBody[type]=function(){
+         //1个参数url
+		 
+		 //2个参数url,data
+		 //2个参数url,success
+		 
+		 //3个参数url,data,option
+		 //3个参数url,data,success
+		 //3个参数url,success,error
+         
+         //4个参数url,data,option,success
+		 //4个参数url,data,option,scope
+		 //4个参数url,data,success,error
+		 //4个参数url,data,success,scope
+        
+         //5个参数url,data,option,success,error
+		 //5个参数url,data,option,success,scope
+		 //5个参数url,data,success,error,scope
+		 		 
+         //6个参数url,data,option,success,error,scope
+        var args=arguments;
+        var newOption={};
+        var scope=null;
+        if(args.length==1){
+            newOption.url=args[0];
+        }
+        else if(args.length==2){
+            newOption.url=args[0];
+            if(Object.prototype.toString.call(args[1]) === '[object Object]'){
+                newOption.data=args[1];
+            }
+            else if(Object.prototype.toString.call(args[1]) === '[object Function]'){
+                newOption.success=args[1];
+            }
+        }
+        else if(args.length==3){
+            newOption.url=args[0];
+            if(Object.prototype.toString.call(args[1]) === '[object Object]'){
+                newOption.data=args[1];
+                if(Object.prototype.toString.call(args[2]) === '[object Object]'){
+                    newOption=Object.assign({},newOption,args[2]);
+                }
+                else if(Object.prototype.toString.call(args[2]) === '[object Function]'){
+                    newOption.success=args[2];
+                }
+            }
+            else if(Object.prototype.toString.call(args[1]) === '[object Function]'){
+                newOption.success=args[1];
+                if(Object.prototype.toString.call(args[2]) === '[object Function]'){
+                    newOption.error=args[2];
+                }
+            }
+        }
+        else if(args.length==4){
+            newOption.url=args[0];
+            if(Object.prototype.toString.call(args[1]) === '[object Object]'){
+                newOption.data=args[1];
+                if(Object.prototype.toString.call(args[2]) === '[object Object]'){
+                    newOption=Object.assign({},newOption,args[2]);
+                    if(Object.prototype.toString.call(args[3]) === '[object Function]'){
+                        newOption.success=args[3];
+                    }
+                    else{
+                        scope=args[3];
+                    }
+                }
+                else if(Object.prototype.toString.call(args[2]) === '[object Function]'){
+                    newOption.success=args[2];
+                    if(Object.prototype.toString.call(args[3]) === '[object Function]'){
+                        newOption.error=args[3];
+                    }
+                    else{
+                        scope=args[3];
+                    }
+                }
+            }
+        }
+        else if(args.length==5){
+            newOption.url=args[0];
+            if(Object.prototype.toString.call(args[1]) === '[object Object]'){
+                newOption.data=args[1];
+                if(Object.prototype.toString.call(args[2]) === '[object Object]'){
+                    newOption=Object.assign({},args[2],newOption);
+                    if(Object.prototype.toString.call(args[3]) === '[object Function]'){
+                        newOption.success=args[3];
+                        if(Object.prototype.toString.call(args[4]) === '[object Function]'){
+                            newOption.error=args[4];
+                        }
+                        else{
+                            scope=args[3];
+                        }
+                    }
+                }
+                else if(Object.prototype.toString.call(args[2]) === '[object Function]'){
+                    newOption.success=args[2];
+                    if(Object.prototype.toString.call(args[3]) === '[object Function]'){
+                        newOption.error=args[3];
+                        scope=args[4];
+                    }
+                }
+            }
+        }
+        else if(args.length==6){
+            newOption.url=args[0];
+            if(Object.prototype.toString.call(args[1]) === '[object Object]'){
+                newOption.data=args[1];
+                if(Object.prototype.toString.call(args[2]) === '[object Object]'){
+                    newOption=Object.assign({},args[2],newOption);
+                    if(Object.prototype.toString.call(args[3]) === '[object Function]'){
+                        newOption.success=args[3];
+                        if(Object.prototype.toString.call(args[4]) === '[object Function]'){
+                            newOption.error=args[4];
+                            scope=args[5];
+                        }
+                    }
+                }
+            }
+        }
+        return new ajaxPlugin.xmlHttpRequest(scope).send(newOption);
     }
 })
 var wsBody={
