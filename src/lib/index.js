@@ -231,6 +231,7 @@ new Array("get","post","put","delete","patch","options","head").forEach(function
                 }
             }
         }
+        newOption.type=type;
         return new ajaxPlugin.xmlHttpRequest(scope).send(newOption);
     }
 })

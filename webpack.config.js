@@ -4,6 +4,9 @@ var webpack = require('webpack')
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
     .BundleAnalyzerPlugin;
 const packageInfo=require("./package.json")
+
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+
 module.exports = {
   entry: process.env.NODE_ENV === 'production'?'./src/lib/index.js':'./src/main.js',
   // entry: './src/lib/index.js',//资源入口文件
@@ -162,7 +165,26 @@ if (process.env.NODE_ENV === 'production') {
     new webpack.LoaderOptionsPlugin({
       minimize: true
     }),
-    
+    new CopyWebpackPlugin([
+      {
+        from: path.resolve(__dirname, './dist/http.js'),
+        to:path.resolve(__dirname, './latest/'),
+        toType:'dir',
+        ignore: ['.*'],
+        transform(content, path) {
+          return "/* vue-http-rexsheng v"+packageInfo.version+" | (c) 2019 by RexSheng */"+(content);
+        },
+      },
+      {
+        from: path.resolve(__dirname, './dist/'),
+        to:path.resolve(__dirname, './latest/'+packageInfo.version),
+        toType:'dir',
+        ignore: ['.*'],
+        transform(content, path) {
+          return "/* vue-http-rexsheng v"+packageInfo.version+" | (c) 2019 by RexSheng */"+(content);
+        },
+      }
+    ])
     // new ExtractTextPlugin("style.css")
   ])
 }
