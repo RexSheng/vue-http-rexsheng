@@ -1,7 +1,7 @@
 {
   "name": "vue-http-rexsheng",
   "description": "A Vue.js plugin for providing http request",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "author": "Rex Sheng <shengxupeng@126.com>",
   "license": "MIT",
   "private": false,

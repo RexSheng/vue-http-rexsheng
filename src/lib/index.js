@@ -63,14 +63,14 @@ var ajaxBody={
             AJAXCONF.mockMode=value;
         },
         get default(){
-            return AJAXCONF.userDefaultConfig();
+            return AJAXCONF._userDefaultConfig();
         },
         set default(value){
             if(Object.prototype.toString.call(value) === '[object Function]'){
-                AJAXCONF.userDefaultConfig=value;
+                AJAXCONF._userDefaultConfig=value;
             }
             else{
-                AJAXCONF.userDefaultConfig=function(option){return value};
+                AJAXCONF._userDefaultConfig=function(option){return value};
             }
             
         },
@@ -91,6 +91,9 @@ var ajaxBody={
         },
         set mockStrategy(value){
             AJAXCONF.mockStrategy=value;
+        },
+        set stripUrl(value){
+            AJAXCONF.stripUrl=value;
         },
     },
     addMock:function(){
@@ -305,7 +308,7 @@ rexShengPlugin.install = function(Vue, options={}) {
     AJAXCONF.WSGlobalInstanceName=AJAXCONF.wsInstanceName.replace(/\$/g,'');//全局替换
     AJAXCONF.successFormatCallback=options.successFormat || options.resultFormat || AJAXCONF.successFormatCallback;//返回数据的格式化
     AJAXCONF.errorFormatCallback=options.errorFormat || options.resultFormat || AJAXCONF.errorFormatCallback;
-    AJAXCONF.userDefaultConfig=function(){return Object.assign({},options.defaultConfig || {},AJAXCONF.userDefaultConfig());}
+    AJAXCONF.userDefaultConfig=function(){return Object.assign({},options.defaultConfig || {},AJAXCONF._userDefaultConfig());}
     // if (!Vue) {
 	// 	//
 	// 	window.Vue=Vue=_vue_;

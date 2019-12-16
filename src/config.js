@@ -27,6 +27,12 @@ Vue.ajax.interceptors.addRequest(d=>{
 Vue.ajax.config.baseUrl="";
 Vue.ajax.config.mockMode=false
 Vue.ajax.config.timeout=500000
+Vue.ajax.config.stripUrl=function(value,key){
+    if(value===null){
+        return true;
+    }
+    return false;
+}
 // Vue.ajax.addMock("/test/mock001",function(d){return d;})
 Vue.ajax.addMock({
     "/test/mock001":function(d){

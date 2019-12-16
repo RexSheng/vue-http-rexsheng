@@ -17,6 +17,7 @@ let AJAXCONF={
     WSGlobalInstanceName:"$socket".replace(/\$/g,''),
     successFormatCallback:defaultFormatCallback,
     errorFormatCallback:defaultFormatCallback,
+    _userDefaultConfig:function(option){return {}},
     userDefaultConfig:function(option){return {}},
     successStatus:function(status){return status===200;},
     missingMockCallback(option){
@@ -46,7 +47,7 @@ let AJAXCONF={
             "0":function(res,req){return res;}
         },
     },
-    
+    stripUrl:function(value,key,type){return false;}
 }
 // let defaultFormatCallback=function(d){return d.data;};
 // let successFormatCallback=options.successFormat || options.resultFormat || defaultFormatCallback;//返回数据的格式化
@@ -252,15 +253,49 @@ let ajax = {
             keys = (keys === null) ? [] : keys;
             if (keys) {
                 if(keys.length>0){
+                    var urlIndex=0;
                     keys.forEach(function(key) {
                         var rawKey = key.substr(1, key.length - 2);
-                        var replace;
-                        if (data===undefined || data===null || data[rawKey]===undefined || data[rawKey]===null) {
+                        var replace,keyData;
+                        if (data===undefined || data===null) {
                             replace = '';
-                        } else {
-                            replace = data[rawKey];
                         }
-                        url = url.replace(new RegExp(key, 'g'), replace);
+                        else if (data[rawKey]===undefined || data[rawKey]===null) {
+                            replace = '';
+                            keyData=data[rawKey];
+                        } else {
+                            replace = encodeURIComponent(data[rawKey]);
+                            keyData=data[rawKey];
+                        }
+                        urlIndex=url.indexOf(key);
+                        if(AJAXCONF.stripUrl(keyData,rawKey,opt.type,opt)){
+                            var str=url.split('').reverse().join('');
+                            var nextIndex=str.indexOf("=",str.length - urlIndex-1);
+                            if(nextIndex!==-1){
+                                if(nextIndex === str.length-urlIndex){
+                                    nextIndex=str.indexOf("&",str.length - urlIndex+1);
+                                    if(nextIndex<(str.length - urlIndex+1)){
+                                        nextIndex=str.indexOf("?",str.length - urlIndex+1);
+                                    }
+                                }
+                                if(nextIndex>=(str.length - urlIndex+1)){
+                                    str=str.substring(nextIndex).split('').reverse().join('');
+                                }
+                                else{
+                                    str=""
+                                }
+                                url=str+url.substring(urlIndex+key.length+1);
+                                if(url.indexOf("&", url.length - 1) !== -1){
+                                    url=url.substr(0,url.length-1);
+                                }
+                            }
+                            else{
+                                url = url.replace(new RegExp(key), "");
+                            }
+                        }
+                        else{
+                            url = url.replace(new RegExp(key, 'g'), replace);
+                        }
                     });
                 }
                 else{
@@ -292,35 +327,38 @@ let ajax = {
                                         var key=strs[i].split("=")[0];
                                         oldKeys.push(key)
                                         if(Object.keys(newData).indexOf(key)<0){
-                                            //将新数据合并到旧数据上
-                                            url+=key+"="+(strs[i].split("=").length>1?strs[i].split("=")[1]:"")+"&";
+                                            var keyData=strs[i].split("=").length>1?strs[i].split("=")[1]:""
+                                            if(!AJAXCONF.stripUrl(keyData,key,opt.type,opt)){
+                                                //将新数据合并到旧数据上
+                                                url+=key+"="+keyData+"&";
+                                            }
                                         }
                                         else{
-                                            //将新数据合并到旧数据上
-                                            url+=key+"="+encodeURIComponent(newData[key]==null?"":newData[key])+"&";
+                                            if(!AJAXCONF.stripUrl(newData[key],key,opt.type,opt)){
+                                                //将新数据合并到旧数据上
+                                                url+=key+"="+encodeURIComponent(newData[key]==null?"":newData[key])+"&";
+                                            }
+                                            
                                         }
                                     }
                                     Object.keys(newData).forEach(key=>{
                                         if(oldKeys.indexOf(key)<0){
-                                            url+=key+"="+encodeURIComponent(newData[key]==null?"":newData[key])+"&";
+                                            if(!AJAXCONF.stripUrl(newData[key],key,opt.type,opt)){
+                                                url+=key+"="+encodeURIComponent(newData[key]==null?"":newData[key])+"&";
+                                            }
                                         }
                                     });
                                 }
                                 else{
                                     url=firstUrl+"?"
                                     Object.keys(newData).forEach(key=>{
-                                        url+=key+"="+encodeURIComponent(newData[key]==null?"":newData[key])+"&";
+                                        if(!AJAXCONF.stripUrl(newData[key],key,opt.type,opt)){
+                                            url+=key+"="+encodeURIComponent(newData[key]==null?"":newData[key])+"&";
+                                        }                                        
                                     });
                                 }
-                                if (typeof String.prototype.endsWith !== 'function') {
-                                    if(url.indexOf("&", url.length - 1) !== -1){
-                                        url=url.substr(0,url.length-1);
-                                    }
-                                }
-                                else{
-                                    if(url.endsWith("&")){
-                                        url=url.substr(0,url.length-1);
-                                    }
+                                if(url.indexOf("&", url.length - 1) !== -1){
+                                    url=url.substr(0,url.length-1);
                                 }
                                 
                             }
